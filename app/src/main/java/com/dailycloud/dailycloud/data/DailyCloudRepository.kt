@@ -1,4 +1,7 @@
 package com.dailycloud.dailycloud.data
 
-class DailyCloudRepository {
+import javax.inject.Inject
+
+class DailyCloudRepository @Inject constructor() {
+
 }
