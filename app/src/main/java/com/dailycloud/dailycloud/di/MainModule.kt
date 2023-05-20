@@ -1,6 +1,7 @@
 package com.dailycloud.dailycloud.di
 
 import com.dailycloud.dailycloud.data.DailyCloudRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,6 +14,6 @@ object MainModule {
 
     @Provides
     @Singleton
-    fun provideRepository() = DailyCloudRepository()
+    fun provideRepository(auth: FirebaseAuth) = DailyCloudRepository(auth)
 
 }
