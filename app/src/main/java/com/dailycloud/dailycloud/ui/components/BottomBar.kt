@@ -68,7 +68,7 @@ fun BottomBar(
                     selected = currentRoute == item.screen.route,
                     onClick = {
                         navController.navigate(item.screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
+                            popUpTo(Screen.Home.route) {
                                 saveState = true
                             }
                             restoreState = true

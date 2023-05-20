@@ -4,4 +4,10 @@
     <string name="camera">Camera</string>
     <string name="home">Home</string>
     <string name="content">Content</string>
+    <string name="logo">Logo</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="we_re_so_glad_to_see_you_here">We’re so glad to see you here.</string>
+    <string name="we_help_you_get_stronger_emotionally">We help you get stronger emotionally</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="i_have_an_account">I have an account</string>
 </resources>

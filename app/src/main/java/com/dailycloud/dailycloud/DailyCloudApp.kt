@@ -15,6 +15,7 @@ import com.dailycloud.dailycloud.ui.navigation.Screen
 @Composable
 fun DailyCloudApp(
     modifier: Modifier = Modifier,
+    startDestination: String,
     navController: NavHostController = rememberNavController(),
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -30,6 +31,7 @@ fun DailyCloudApp(
     ) { paddingValues ->
         NavGraph(
             navController = navController,
+            startDestination = startDestination,
             modifier = Modifier.padding(paddingValues),
         )
     }

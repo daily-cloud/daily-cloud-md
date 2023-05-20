@@ -2,6 +2,7 @@ package com.dailycloud.dailycloud.ui.navigation
 
 sealed class Screen(val route: String) {
 
+    object GetStarted : Screen("get-started")
     object Login : Screen("login")
     object SignUp : Screen("signup")
     object Home : Screen("home")

@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.dailycloud.dailycloud.ui.screen.camera.CameraScreen
 import com.dailycloud.dailycloud.ui.screen.content.ContentScreen
 import com.dailycloud.dailycloud.ui.screen.contents.ContentsScreen
+import com.dailycloud.dailycloud.ui.screen.getstarted.GetStartedScreen
 import com.dailycloud.dailycloud.ui.screen.history.HistoryScreen
 import com.dailycloud.dailycloud.ui.screen.home.HomeScreen
 import com.dailycloud.dailycloud.ui.screen.journal.JournalScreen
@@ -20,15 +21,34 @@ import com.dailycloud.dailycloud.ui.screen.signup.SignUpScreen
 @Composable
 fun NavGraph(
     navController: NavHostController,
+    startDestination: String,
     modifier: Modifier = Modifier
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route,
+        startDestination = startDestination,
         modifier = modifier,
     ) {
+        composable(Screen.GetStarted.route) {
+            GetStartedScreen(
+                toLogin = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.Login.route)
+                },
+                toSignUp = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.SignUp.route)
+                }
+            )
+        }
         composable(Screen.Login.route) {
-            LoginScreen()
+            LoginScreen(
+                toHome = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                }
+            )
         }
         composable(Screen.SignUp.route) {
             SignUpScreen()
