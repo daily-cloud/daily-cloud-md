@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "429965540863",
+    "project_id": "daily-cloud-c23-ps227",
+    "storage_bucket": "daily-cloud-c23-ps227.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429965540863:android:a8a882eff47eb69370fbca",
+        "android_client_info": {
+          "package_name": "com.dailycloud.dailycloud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429965540863-9fr4805e3ri4n4k9kqqk6knkvnvoi52j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwEjKHQR2rWtGc1ptBLAedEVYXE217Ew8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429965540863-9fr4805e3ri4n4k9kqqk6knkvnvoi52j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
