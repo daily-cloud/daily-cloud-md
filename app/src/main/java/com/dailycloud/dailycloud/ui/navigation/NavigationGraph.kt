@@ -54,7 +54,11 @@ fun NavGraph(
             SignUpScreen()
         }
         composable(Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(
+                toJournal = {
+                    navController.navigate(Screen.Journal.route)
+                }
+            )
         }
         composable(Screen.Camera.route) {
             CameraScreen()
@@ -68,12 +72,12 @@ fun NavGraph(
         composable(Screen.Result.route) {
             ResultScreen()
         }
-        composable(
-            route = Screen.Journal.route,
-            arguments = listOf(navArgument("journalId") { type = NavType.StringType } ),
-        ) {
-            val id = it.arguments?.getString("journalId") ?: ""
-            JournalScreen()
+        composable(Screen.Journal.route,) {
+            JournalScreen(
+                toHome = {
+                    navController.navigateUp()
+                }
+            )
         }
         composable(
             route = Screen.Content.route,
