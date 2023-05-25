@@ -10,4 +10,12 @@
     <string name="we_help_you_get_stronger_emotionally">We help you get stronger emotionally</string>
     <string name="sign_up">Sign Up</string>
     <string name="i_have_an_account">I have an account</string>
+    <string name="how_are_you_feeling_today">How are you feeling today?</string>
+    <string name="you_re_feeling_today">You’re feeling %1$s today!</string>
+    <string name="your_last_3_moods">Your last 3 moods</string>
+    <string name="daily_journal">Daily Journal</string>
+    <string name="ready_to_write_your_today_s_journal">Ready to write your today’s journal?</string>
+    <string name="login">Login</string>
+    <string name="log_in_with_google">Log in with Google</string>
+    <string name="don_t_have_an_account">"Don't have an account? "</string>
 </resources>

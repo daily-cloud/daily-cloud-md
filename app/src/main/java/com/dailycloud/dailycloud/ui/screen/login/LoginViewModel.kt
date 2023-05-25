@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(private val repository: DailyCloudRepos
         _password.value = password
     }
 
-    fun login() {
+    fun login(toHome: () -> Unit) {
         viewModelScope.launch {
             repository.login(_email.value, _password.value)
                 .collect {
@@ -42,7 +42,7 @@ class LoginViewModel @Inject constructor(private val repository: DailyCloudRepos
 
                         }
                         is UiState.Success -> {
-
+                            toHome()
                         }
                         is UiState.Error -> {
 
