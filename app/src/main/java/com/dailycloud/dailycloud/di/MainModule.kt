@@ -1,6 +1,7 @@
 package com.dailycloud.dailycloud.di
 
 import com.dailycloud.dailycloud.data.DailyCloudRepository
+import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -14,6 +15,12 @@ object MainModule {
 
     @Provides
     @Singleton
-    fun provideRepository(auth: FirebaseAuth) = DailyCloudRepository(auth)
+    fun provideRepository(
+        auth: FirebaseAuth,
+        apiService: ApiService,
+    ) = DailyCloudRepository(
+        auth,
+        apiService,
+    )
 
 }

@@ -2,6 +2,7 @@ package com.dailycloud.dailycloud.data
 
 import android.util.Log
 import com.dailycloud.dailycloud.data.local.model.User
+import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.dailycloud.dailycloud.data.remote.service.AuthService
 import com.dailycloud.dailycloud.ui.common.UiState
 import com.google.firebase.Timestamp
@@ -17,8 +18,11 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class DailyCloudRepository @Inject constructor(
-    private val auth: FirebaseAuth
-) : AuthService {
+    private val auth: FirebaseAuth,
+    private val apiService: ApiService,
+) :
+    AuthService,
+{
 
     override val currentUser: FirebaseUser?
         get() = auth.currentUser
