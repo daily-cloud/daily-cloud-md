@@ -1,18 +1,13 @@
 package com.dailycloud.dailycloud.data
 
-import android.util.Log
-import com.dailycloud.dailycloud.data.local.model.User
 import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.dailycloud.dailycloud.data.remote.service.AuthService
 import com.dailycloud.dailycloud.ui.common.UiState
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -21,7 +16,7 @@ class DailyCloudRepository @Inject constructor(
     private val auth: FirebaseAuth,
     private val apiService: ApiService,
 ) :
-    AuthService,
+    AuthService
 {
 
     override val currentUser: FirebaseUser?
