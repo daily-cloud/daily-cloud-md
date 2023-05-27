@@ -41,6 +41,7 @@ import com.dailycloud.dailycloud.ui.theme.Primary
 fun LoginScreen(
     modifier: Modifier = Modifier,
     toHome: () -> Unit,
+    toSignUp: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
     Column(modifier = modifier
@@ -74,7 +75,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Row() {
             Text(stringResource(R.string.don_t_have_an_account))
-            Text(stringResource(R.string.sign_up), color = Primary, modifier = Modifier.clickable {  })
+            Text(stringResource(R.string.sign_up), color = Primary, modifier = Modifier.clickable { toSignUp() })
         }
         Spacer(modifier = Modifier.height(24.dp))
         Text("OR", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())

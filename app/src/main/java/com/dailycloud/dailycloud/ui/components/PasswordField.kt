@@ -37,6 +37,7 @@ import com.dailycloud.dailycloud.ui.theme.DailyCloudTheme
 fun PasswordField(
     modifier: Modifier = Modifier,
     value: String,
+    hint: String = "Password",
     onValueChange: (String) -> Unit,
 ) {
     var passwordIsVisible by remember { mutableStateOf(false) }
@@ -61,7 +62,7 @@ fun PasswordField(
                 Box() {
                     if (value.isEmpty()) {
                         Text(
-                            text = "Password",
+                            text = hint,
                             style = TextStyle(color = Color.Gray),
                         )
                     }

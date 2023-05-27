@@ -18,4 +18,13 @@
     <string name="login">Login</string>
     <string name="log_in_with_google">Log in with Google</string>
     <string name="don_t_have_an_account">"Don't have an account? "</string>
+    <string name="sign_up_with_email">Sign up with Email</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
+    <string name="create_an_account_take_a_step_toward_self_care"><![CDATA[Create an account  &  take a step toward self care]]></string>
+    <string name="a_step_closer_to_self_care">A Step Closer to\nSelf Care</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="agreement">By continuing, I agree to DailyCloud\'s Terms of Service. I also consent to the use of my app usage data to improve DailyCloud and the relevancy of advertising campaigns for the app. DailyCloud will never use your journal entries: only you can read them. See our Privacy Policy for more information</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="i_agree_to_terms_conditions"><![CDATA[I agree to terms & conditions]]></string>
+    <string name="continues">Continue</string>
 </resources>

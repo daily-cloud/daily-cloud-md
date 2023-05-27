@@ -32,11 +32,9 @@ fun NavGraph(
         composable(Screen.GetStarted.route) {
             GetStartedScreen(
                 toLogin = {
-                    navController.popBackStack()
                     navController.navigate(Screen.Login.route)
                 },
                 toSignUp = {
-                    navController.popBackStack()
                     navController.navigate(Screen.SignUp.route)
                 }
             )
@@ -47,11 +45,25 @@ fun NavGraph(
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) { inclusive = true }
                     }
+                },
+                toSignUp = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.SignUp.route)
                 }
             )
         }
         composable(Screen.SignUp.route) {
-            SignUpScreen()
+            SignUpScreen(
+                toHome = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.SignUp.route) { inclusive = true }
+                    }
+                },
+                toLogin = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.Login.route)
+                }
+            )
         }
         composable(Screen.Home.route) {
             HomeScreen(

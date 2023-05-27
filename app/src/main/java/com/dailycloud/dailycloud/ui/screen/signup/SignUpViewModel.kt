@@ -6,13 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dailycloud.dailycloud.data.DailyCloudRepository
 import com.dailycloud.dailycloud.ui.common.UiState
-import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepository) : ViewModel() {
+
+    private val _isSignUpWithEmail = MutableStateFlow(false)
+    val isSignUpWithEmail: StateFlow<Boolean> get() = _isSignUpWithEmail
 
     private val _email = mutableStateOf("")
     val email: State<String> get() = _email
@@ -25,6 +29,9 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
 
     private val _name = mutableStateOf("")
     val name: State<String> get() = _name
+
+    private val _isAgree = mutableStateOf(false)
+    val isAgree: State<Boolean> get() = _isAgree
 
     fun onEmailChanged(email: String) {
         _email.value = email
@@ -42,7 +49,15 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
         _name.value = name
     }
 
-    fun signUp() {
+    fun onAgreeChanged(isAgree: Boolean) {
+        _isAgree.value = isAgree
+    }
+
+    fun toSignUpWithEmail() {
+        _isSignUpWithEmail.value = true
+    }
+
+    fun signUp(toHome: () -> Unit) {
         viewModelScope.launch {
             repository.register(_email.value, _password.value, _name.value, null, null)
                 .collect {
@@ -51,7 +66,7 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
 
                         }
                         is UiState.Success -> {
-
+                            toHome()
                         }
                         is UiState.Error -> {
 
@@ -59,5 +74,7 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
                     }
                 }
         }
+    }
+    fun loginWithGoogle() {
     }
 }
