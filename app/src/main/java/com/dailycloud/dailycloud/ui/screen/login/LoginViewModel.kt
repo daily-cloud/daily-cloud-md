@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dailycloud.dailycloud.data.DailyCloudRepository
 import com.dailycloud.dailycloud.ui.common.UiState
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -17,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repository: DailyCloudRepository) : ViewModel() {
+class LoginViewModel @Inject constructor(private val repository: DailyCloudRepository, val oneTapClient: SignInClient) : ViewModel() {
 
     private val _email = mutableStateOf("")
     val email: State<String> get() = _email
@@ -52,4 +55,35 @@ class LoginViewModel @Inject constructor(private val repository: DailyCloudRepos
         }
     }
 
+    fun oneTapSignIn(launch: (result: BeginSignInResult) -> Unit) = viewModelScope.launch {
+        repository.oneTapSignIn().collect {
+            when (it) {
+                is UiState.Loading -> {
+
+                }
+                is UiState.Success -> {
+                    launch(it.data)
+                }
+                is UiState.Error -> {
+
+                }
+            }
+        }
+    }
+
+    fun signInWithGoogle(googleCredential: AuthCredential, toHome: () -> Unit) = viewModelScope.launch {
+        repository.loginWithGoogle(googleCredential).collect {
+            when (it) {
+                is UiState.Loading -> {
+
+                }
+                is UiState.Success -> {
+                    toHome()
+                }
+                is UiState.Error -> {
+
+                }
+            }
+        }
+    }
 }

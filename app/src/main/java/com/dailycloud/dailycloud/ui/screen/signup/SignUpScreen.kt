@@ -1,5 +1,9 @@
 package com.dailycloud.dailycloud.ui.screen.signup
 
+import android.app.Activity.RESULT_OK
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +41,9 @@ import com.dailycloud.dailycloud.ui.components.EmailField
 import com.dailycloud.dailycloud.ui.components.PasswordField
 import com.dailycloud.dailycloud.ui.components.SocialButton
 import com.dailycloud.dailycloud.ui.theme.Primary
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider.getCredential
 
 @Composable
 fun SignUpScreen(
@@ -49,6 +56,24 @@ fun SignUpScreen(
     val password by viewModel.password
     val confirmPassword by viewModel.confirmPassword
     val isAgree by viewModel.isAgree
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            try {
+                val credentials = viewModel.oneTapClient.getSignInCredentialFromIntent(result.data)
+                val googleIdToken = credentials.googleIdToken
+                val googleCredentials = getCredential(googleIdToken, null)
+                viewModel.signInWithGoogle(googleCredentials, toHome)
+            } catch (it: ApiException) {
+                print(it)
+            }
+        }
+    }
+
+    fun launch(signInResult: BeginSignInResult) {
+        val intent = IntentSenderRequest.Builder(signInResult.pendingIntent.intentSender).build()
+        launcher.launch(intent)
+    }
 
     viewModel.isSignUpWithEmail.collectAsState().value.let { isSignUpWithEmail ->
         if (isSignUpWithEmail) {
@@ -73,7 +98,7 @@ fun SignUpScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(16.dp),
                 toSignUpWithEmail = { viewModel.toSignUpWithEmail() },
-                loginWithGoogle = viewModel::loginWithGoogle,
+                oneTapSignIn = { viewModel.oneTapSignIn { launch(it) } },
             )
         }
     }
@@ -83,7 +108,7 @@ fun SignUpScreen(
 fun MultiSignUpContent(
     modifier: Modifier = Modifier,
     toSignUpWithEmail: () -> Unit,
-    loginWithGoogle: () -> Unit,
+    oneTapSignIn: () -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -115,7 +140,7 @@ fun MultiSignUpContent(
             textAlign = TextAlign.Center,
         )
         SocialButton(
-            onClick = { loginWithGoogle() },
+            onClick = oneTapSignIn,
             text = stringResource(R.string.sign_up_with_google),
             Icon = Icons.Default.AlternateEmail
         )

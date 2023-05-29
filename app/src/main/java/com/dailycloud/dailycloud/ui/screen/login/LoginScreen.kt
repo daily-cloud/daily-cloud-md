@@ -1,5 +1,9 @@
 package com.dailycloud.dailycloud.ui.screen.login
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,6 +40,9 @@ import com.dailycloud.dailycloud.ui.components.PasswordField
 import com.dailycloud.dailycloud.ui.components.SocialButton
 import com.dailycloud.dailycloud.ui.theme.DailyCloudTheme
 import com.dailycloud.dailycloud.ui.theme.Primary
+import com.google.android.gms.auth.api.identity.BeginSignInResult
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
 
 @Composable
 fun LoginScreen(
@@ -44,6 +51,25 @@ fun LoginScreen(
     toSignUp: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            try {
+                val credentials = viewModel.oneTapClient.getSignInCredentialFromIntent(result.data)
+                val googleIdToken = credentials.googleIdToken
+                val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
+                viewModel.signInWithGoogle(googleCredentials, toHome)
+            } catch (it: ApiException) {
+                print(it)
+            }
+        }
+    }
+
+    fun launch(signInResult: BeginSignInResult) {
+        val intent = IntentSenderRequest.Builder(signInResult.pendingIntent.intentSender).build()
+        launcher.launch(intent)
+    }
+
     Column(modifier = modifier
         .verticalScroll(rememberScrollState())
         .padding(16.dp)) {
@@ -80,6 +106,6 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(24.dp))
         Text("OR", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(24.dp))
-        SocialButton(onClick = {}, text = stringResource(R.string.log_in_with_google), Icon = Icons.Default.Email)
+        SocialButton(onClick = { viewModel.oneTapSignIn { launch(it) } }, text = stringResource(R.string.log_in_with_google), Icon = Icons.Default.Email)
     }
 }
