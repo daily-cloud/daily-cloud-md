@@ -1,12 +1,10 @@
-package com.dailycloud.dailycloud.ui.screen.components
+package com.dailycloud.dailycloud.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +20,7 @@ import com.dailycloud.dailycloud.ui.theme.DailyCloudTheme
 
 @Composable
 fun ContentListItem(
-    name: String,
+    title: String,
     articlePreview: String,
     photoUrl: String,
     modifier: Modifier = Modifier
@@ -42,7 +40,7 @@ fun ContentListItem(
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = name,
+                text = title,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp)
             )
@@ -60,7 +58,7 @@ fun ContentListItem(
 fun HeroListItemPreview() {
     DailyCloudTheme {
         ContentListItem(
-            name = "Lorem ipsum",
+            title = "Lorem ipsum",
             articlePreview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
             photoUrl = "https://www.themoviedb.org/t/p/w440_and_h660_face/bCXgdvCobMHYIGblzbaNMF4SnCm.jpg"
         )

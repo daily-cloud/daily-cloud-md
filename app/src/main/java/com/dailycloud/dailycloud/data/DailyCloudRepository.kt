@@ -1,5 +1,7 @@
 package com.dailycloud.dailycloud.data
 
+import com.dailycloud.dailycloud.data.local.model.Content
+import com.dailycloud.dailycloud.data.local.model.dummy.ContentData
 import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.dailycloud.dailycloud.data.remote.service.AuthService
 import com.dailycloud.dailycloud.ui.common.UiState
@@ -14,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -80,5 +83,17 @@ class DailyCloudRepository @Inject constructor(
         auth.signOut()
         googleClient.signOut()
     }
+
+    private val contents = mutableListOf<Content>()
+
+    fun getContents(): Flow<List<Content>> {
+        if (contents.isEmpty()) {
+            ContentData.listContent.forEach {
+                contents.add(it)
+            }
+        }
+        return flowOf(contents)
+    }
+
 
 }
