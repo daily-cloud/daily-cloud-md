@@ -104,7 +104,12 @@ fun NavGraph(
             arguments = listOf(navArgument("contentId") { type = NavType.StringType } ),
         ) {
             val id = it.arguments?.getString("contentId") ?: ""
-            ContentScreen()
+            ContentScreen(
+                contentId = id,
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

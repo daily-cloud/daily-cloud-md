@@ -85,7 +85,6 @@ class DailyCloudRepository @Inject constructor(
     }
 
     private val contents = mutableListOf<Content>()
-
     fun getContents(): Flow<List<Content>> {
         if (contents.isEmpty()) {
             ContentData.listContent.forEach {
@@ -93,6 +92,12 @@ class DailyCloudRepository @Inject constructor(
             }
         }
         return flowOf(contents)
+    }
+
+    fun getContentById(contentId: String): Content {
+        return contents.first {
+            it.contentId == contentId
+        }
     }
 
 
