@@ -27,7 +27,7 @@ fun ContentListItem(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.clickable { }
+        modifier = modifier
     ) {
         AsyncImage(
             model = photoUrl,
@@ -55,7 +55,7 @@ fun ContentListItem(
 
 @Preview(showBackground = true)
 @Composable
-fun HeroListItemPreview() {
+fun ContentListItemPreview() {
     DailyCloudTheme {
         ContentListItem(
             title = "Lorem ipsum",

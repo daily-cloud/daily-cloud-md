@@ -80,7 +80,11 @@ fun NavGraph(
             HistoryScreen()
         }
         composable(Screen.Contents.route) {
-            ContentsScreen()
+            ContentsScreen(
+                navigateToContentDetail = {contentId ->
+                    navController.navigate(Screen.Content.createRoute(contentId))
+                }
+            )
         }
         composable(Screen.Result.route) {
             ResultScreen()
