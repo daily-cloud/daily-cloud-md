@@ -15,7 +15,7 @@ object NetworkModule {
     @Provides
     fun apiService(): ApiService {
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("https://story-api.dicoding.dev/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
