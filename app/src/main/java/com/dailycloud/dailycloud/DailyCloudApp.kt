@@ -24,7 +24,7 @@ fun DailyCloudApp(
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            if (currentRoute in listOf(Screen.Home.route, Screen.History.route, Screen.Contents.route)) {
+            if (currentRoute in listOf(Screen.Home.route, Screen.History.route, Screen.Contents.route, Screen.Profile.route)) {
                 BottomBar(navController)
             }
         },

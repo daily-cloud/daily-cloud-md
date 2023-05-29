@@ -1,7 +1,11 @@
 package com.dailycloud.dailycloud.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -40,19 +44,19 @@ fun BottomBar(
                 screen = Screen.Home
             ),
             NavigationItem(
-                title = stringResource(R.string.camera),
-                icon = Icons.Default.Camera,
-                screen = Screen.Camera
-            ),
-            NavigationItem(
                 title = stringResource(R.string.history),
-                icon = Icons.Default.History,
+                icon = Icons.Default.CalendarToday,
                 screen = Screen.History
             ),
             NavigationItem(
                 title = stringResource(R.string.content),
-                icon = Icons.Default.Person,
+                icon = Icons.Default.Dashboard,
                 screen = Screen.Contents
+            ),
+            NavigationItem(
+                title = stringResource(R.string.profile),
+                icon = Icons.Default.AccountCircle,
+                screen = Screen.Profile
             ),
         )
         NavigationBar {

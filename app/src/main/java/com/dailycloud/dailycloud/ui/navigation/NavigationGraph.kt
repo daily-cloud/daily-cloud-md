@@ -15,6 +15,7 @@ import com.dailycloud.dailycloud.ui.screen.history.HistoryScreen
 import com.dailycloud.dailycloud.ui.screen.home.HomeScreen
 import com.dailycloud.dailycloud.ui.screen.journal.JournalScreen
 import com.dailycloud.dailycloud.ui.screen.login.LoginScreen
+import com.dailycloud.dailycloud.ui.screen.profile.ProfileScreen
 import com.dailycloud.dailycloud.ui.screen.result.ResultScreen
 import com.dailycloud.dailycloud.ui.screen.signup.SignUpScreen
 
@@ -83,6 +84,9 @@ fun NavGraph(
         }
         composable(Screen.Result.route) {
             ResultScreen()
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen()
         }
         composable(Screen.Journal.route,) {
             JournalScreen(
