@@ -84,7 +84,9 @@ fun NavGraph(
         }
         composable(Screen.History.route) {
             HistoryScreen(
-
+                toJournal = {
+                    navController.navigate(Screen.Journal.route)
+                }
             )
         }
         composable(Screen.Contents.route) {

@@ -2,6 +2,8 @@ package com.dailycloud.dailycloud.util
 
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object Util {
     fun reduceText(text : String, maxLength : Int) : String{
@@ -20,4 +22,10 @@ object Util {
         return dateFormat.format(currentDate)
 
     }
+
+    fun Long.toDate(): String {
+        val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+        return dateFormat.format(Date(this))
+    }
 }
+

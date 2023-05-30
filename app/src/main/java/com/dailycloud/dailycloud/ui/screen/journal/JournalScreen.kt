@@ -70,8 +70,6 @@ fun JournalScreen(
                 .padding(24.dp)
         ) {
             Text("Date : ", style = MaterialTheme.typography.titleMedium, color = Color.White)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text("Current Mood : ", style = MaterialTheme.typography.titleMedium, color = Color.White)
         }
         Spacer(modifier = Modifier.height(16.dp))
         BasicTextField(
