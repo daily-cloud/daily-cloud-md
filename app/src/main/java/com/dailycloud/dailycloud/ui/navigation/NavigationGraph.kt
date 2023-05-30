@@ -44,7 +44,7 @@ fun NavGraph(
             LoginScreen(
                 toHome = {
                     navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
+                        popUpTo(Screen.GetStarted.route) { inclusive = true }
                     }
                 },
                 toSignUp = {
@@ -57,7 +57,7 @@ fun NavGraph(
             SignUpScreen(
                 toHome = {
                     navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.SignUp.route) { inclusive = true }
+                        popUpTo(Screen.GetStarted.route) { inclusive = true }
                     }
                 },
                 toLogin = {
@@ -74,10 +74,18 @@ fun NavGraph(
             )
         }
         composable(Screen.Camera.route) {
-            CameraScreen()
+            CameraScreen(
+                toResult = {
+                    navController.navigate(Screen.Result.route) {
+                        popUpTo(Screen.Journal.route) { inclusive = true }
+                    }
+                }
+            )
         }
         composable(Screen.History.route) {
-            HistoryScreen()
+            HistoryScreen(
+
+            )
         }
         composable(Screen.Contents.route) {
             ContentsScreen(
@@ -87,7 +95,11 @@ fun NavGraph(
             )
         }
         composable(Screen.Result.route) {
-            ResultScreen()
+            ResultScreen(
+                toHome = {
+                    navController.navigateUp()
+                }
+            )
         }
         composable(Screen.Profile.route) {
             ProfileScreen()
@@ -96,7 +108,10 @@ fun NavGraph(
             JournalScreen(
                 toHome = {
                     navController.navigateUp()
-                }
+                },
+                toCamera = {
+                    navController.navigate(Screen.Camera.route)
+                },
             )
         }
         composable(

@@ -39,7 +39,8 @@ import com.google.accompanist.permissions.rememberPermissionState
 @Composable
 fun CameraScreen(
     modifier: Modifier = Modifier,
-    viewModel: CameraViewModel = hiltViewModel()
+    viewModel: CameraViewModel = hiltViewModel(),
+    toResult: () -> Unit,
 ) {
 
     val permissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
@@ -81,7 +82,7 @@ fun CameraScreen(
                     tint = Color.Transparent
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = { toResult() }) {
                 Icon(
                     imageVector = Icons.Filled.Camera,
                     contentDescription = "Camera",
@@ -97,13 +98,5 @@ fun CameraScreen(
                 )
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun CameraScreenPreview() {
-    DailyCloudTheme {
-        CameraScreen()
     }
 }

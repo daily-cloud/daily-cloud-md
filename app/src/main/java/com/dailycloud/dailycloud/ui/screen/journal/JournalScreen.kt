@@ -31,10 +31,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.dailycloud.dailycloud.R
+import com.dailycloud.dailycloud.ui.components.CustomFilledButton
 import com.dailycloud.dailycloud.ui.theme.DailyCloudTheme
 import com.dailycloud.dailycloud.ui.theme.Primary
 
@@ -43,6 +46,7 @@ fun JournalScreen(
     modifier: Modifier = Modifier,
     viewModel: JournalViewModel = hiltViewModel(),
     toHome: () -> Unit,
+    toCamera: () -> Unit,
 ) {
     val content by viewModel.journalContent
 
@@ -88,12 +92,10 @@ fun JournalScreen(
                 .fillMaxWidth()
                 .weight(1f),
         )
-        Button(
-            onClick = {  },
+        CustomFilledButton(
+            onClick = { toCamera() },
             modifier = Modifier.align(Alignment.End),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Text("DONE")
-        }
+            text = stringResource(R.string.next)
+        )
     }
 }
