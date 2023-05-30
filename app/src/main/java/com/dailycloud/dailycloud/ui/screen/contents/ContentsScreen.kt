@@ -1,6 +1,9 @@
 package com.dailycloud.dailycloud.ui.screen.contents
 
 
+import android.content.res.Resources
+import android.net.Uri
+import android.view.ViewGroup
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.clickable
@@ -13,9 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,6 +32,9 @@ import com.dailycloud.dailycloud.data.local.model.Content
 import com.dailycloud.dailycloud.ui.common.UiState
 import com.dailycloud.dailycloud.ui.components.ContentListItem
 import com.dailycloud.dailycloud.util.Util
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -79,22 +87,24 @@ fun Content(
                 modifier = Modifier.padding(bottom = 20.dp)
             )
 
-            AndroidView(factory = {
-                val view = YouTubePlayerView(it)
-                view.addYouTubePlayerListener(
-                    object : AbstractYouTubePlayerListener() {
-                        override fun onReady(youTubePlayer: YouTubePlayer) {
-                            super.onReady(youTubePlayer)
-                            youTubePlayer.loadVideo("hsfScVJgGOw", 0f)
-                        }
-                    }
-                )
-                view
-            },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
-                    .padding(bottom = 20.dp))
+//            AndroidView(factory = {
+//                val view = YouTubePlayerView(it)
+//                view.addYouTubePlayerListener(
+//                    object : AbstractYouTubePlayerListener() {
+//                        override fun onReady(youTubePlayer: YouTubePlayer) {
+//                            super.onReady(youTubePlayer)
+//                            youTubePlayer.loadVideo("hsfScVJgGOw", 0f)
+//                        }
+//                    }
+//                )
+//                view
+//            },
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(300.dp)
+//                    .padding(bottom = 20.dp))
+
+            VideoPlayer("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
 
             LazyColumn{
                 items(contentList) { data ->
@@ -108,5 +118,34 @@ fun Content(
             }
         }
     }
+}
+
+@Composable
+fun VideoPlayer(url : String) {
+    val context = LocalContext.current
+    val exoPlayer = ExoPlayer.Builder(context).build()
+    val mediaItem = MediaItem.fromUri(Uri.parse(url))
+    exoPlayer.setMediaItem(mediaItem)
+
+    fun Int.dpToPx(): Int {
+        val scale = Resources.getSystem().displayMetrics.density
+        return (this * scale + 0.5f).toInt()
+    }
+
+    val playerView = StyledPlayerView(context)
+    playerView.player = exoPlayer
+    playerView.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300.dpToPx())
+
+    DisposableEffect(AndroidView(factory = {playerView})){
+
+        exoPlayer.prepare()
+        exoPlayer.playWhenReady= true
+
+        onDispose {
+            exoPlayer.release()
+        }
+    }
+
+
 }
 
