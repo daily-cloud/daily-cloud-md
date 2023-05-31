@@ -70,6 +70,9 @@ fun NavGraph(
             HomeScreen(
                 toJournal = {
                     navController.navigate(Screen.Journal.route)
+                },
+                toContent = {
+                    navController.navigate(Screen.Content.createRoute(it))
                 }
             )
         }

@@ -6,10 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dailycloud.dailycloud.data.DailyCloudRepository
+import com.dailycloud.dailycloud.data.local.model.Content
 import com.dailycloud.dailycloud.ui.common.Activity
 import com.dailycloud.dailycloud.ui.common.Mood
+import com.dailycloud.dailycloud.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -33,6 +36,13 @@ class HomeViewModel @Inject constructor(private val repository: DailyCloudReposi
     private val _journalContent: MutableState<String?> = mutableStateOf(null)
     val journalContent: State<String?> = _journalContent
 
+    private val _contents: MutableState<List<Content>> = mutableStateOf(listOf())
+    val contents: State<List<Content>> = _contents
+
+    init {
+        getContents()
+    }
+
     fun onActivitySelected(activity: Activity) {
         if (_selectedActivity.value == null) {
             _selectedActivity.value = activity
@@ -48,4 +58,12 @@ class HomeViewModel @Inject constructor(private val repository: DailyCloudReposi
         _isCustomActivityFinished.value = true
     }
 
+    private fun getContents() {
+        viewModelScope.launch {
+            repository.getContents()
+                .collect { contents ->
+                    _contents.value = contents
+                }
+        }
+    }
 }
