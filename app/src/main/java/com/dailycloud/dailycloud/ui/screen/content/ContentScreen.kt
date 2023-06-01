@@ -1,6 +1,7 @@
 package com.dailycloud.dailycloud.ui.screen.content
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,12 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.dailycloud.dailycloud.R
 import com.dailycloud.dailycloud.ui.common.UiState
 import com.dailycloud.dailycloud.util.Util.dateFormat
 
@@ -48,7 +54,8 @@ fun ContentScreen(
                     data.title,
                     data.article,
                     data.author,
-                    dateFormat(data.createdAt)
+                    dateFormat(data.createdAt),
+                    navigateBack
                 )
             }
 
@@ -64,6 +71,7 @@ fun DetailContent(
     article: String,
     author: String,
     releaseDate: String,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -76,14 +84,23 @@ fun DetailContent(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            AsyncImage(
-                model = photoUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(500.dp)
-            )
+            Box {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = stringResource(R.string.back),
+                    modifier = Modifier.padding(16.dp).clickable { onBackClick() }
+                )
+
+                AsyncImage(
+                    model = photoUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(500.dp)
+                )
+            }
+
 
             Text(
                 text = title,
