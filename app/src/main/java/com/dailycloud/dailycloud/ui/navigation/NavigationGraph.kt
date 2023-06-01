@@ -1,5 +1,6 @@
 package com.dailycloud.dailycloud.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -15,6 +16,7 @@ import com.dailycloud.dailycloud.ui.screen.history.HistoryScreen
 import com.dailycloud.dailycloud.ui.screen.home.HomeScreen
 import com.dailycloud.dailycloud.ui.screen.journal.JournalScreen
 import com.dailycloud.dailycloud.ui.screen.login.LoginScreen
+import com.dailycloud.dailycloud.ui.screen.profile.EditProfileScreen
 import com.dailycloud.dailycloud.ui.screen.profile.ProfileScreen
 import com.dailycloud.dailycloud.ui.screen.result.ResultScreen
 import com.dailycloud.dailycloud.ui.screen.signup.SignUpScreen
@@ -112,9 +114,21 @@ fun NavGraph(
                     navController.navigate(Screen.GetStarted.route) {
                         popUpTo(Screen.Home.route) { inclusive = true }
                     }
+                },
+                toEditProfile = {
+                    navController.navigate(Screen.EditProfile.route)
                 }
             )
         }
+
+        composable(Screen.EditProfile.route) {
+            EditProfileScreen(
+                toProfile = {
+                    navController.navigate(Screen.Profile.route)
+                }
+            )
+        }
+
         composable(Screen.Journal.route,) {
             JournalScreen(
                 toHome = {

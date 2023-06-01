@@ -33,9 +33,7 @@
     <string name="next">Next</string>
     <string name="sleep">Sleep</string>
     <string name="what_is_your_today_activity">What is your activity for today?</string>
-<<<<<<< HEAD
     <string name="back">Back</string>
-=======
     <string name="log_out">Log out</string>
->>>>>>> 4ecbc408fae4575d17481a68396411775a8ee978
+    <string name="update">Update</string>
 </resources>
