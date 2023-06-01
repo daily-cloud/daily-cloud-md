@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,12 +34,14 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
     toJournal: () -> Unit,
+    toContent: (String) -> Unit,
 ) {
     val activitySelected by viewModel.selectedActivity
     val isCustomActivity by viewModel.isCustomActivity
     val isCustomActivityFinished by viewModel.isCustomActivityFinished
     val customActivity by viewModel.customActivity
     val journalContent by viewModel.journalContent
+    val contents by viewModel.contents
 
     Column(modifier = modifier) {
         Text("Hello, Cloudie!", style = MaterialTheme.typography.displaySmall, modifier = Modifier.padding(16.dp))
@@ -58,9 +61,12 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             state = rememberLazyListState(),
         ) {
-            items(5) {
-                ContentHomeItem(title = "Lorem Ipsum", image = "https://images.unsplash.com/photo-1604480132736-44c188fe4d20?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb") {
-
+            items(contents) {
+                ContentHomeItem(
+                    title = it.title,
+                    image = it.photoPath
+                ) {
+                    toContent(it.contentId)
                 }
             }
         }

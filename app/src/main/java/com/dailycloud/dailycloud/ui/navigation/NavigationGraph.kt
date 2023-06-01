@@ -70,6 +70,9 @@ fun NavGraph(
             HomeScreen(
                 toJournal = {
                     navController.navigate(Screen.Journal.route)
+                },
+                toContent = {
+                    navController.navigate(Screen.Content.createRoute(it))
                 }
             )
         }
@@ -104,7 +107,13 @@ fun NavGraph(
             )
         }
         composable(Screen.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(
+                toGetStarted = {
+                    navController.navigate(Screen.GetStarted.route) {
+                        popUpTo(Screen.Home.route) { inclusive = true }
+                    }
+                }
+            )
         }
         composable(Screen.Journal.route,) {
             JournalScreen(
