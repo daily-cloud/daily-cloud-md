@@ -61,7 +61,6 @@ fun ContentsScreen(
             is UiState.Error -> {}
         }
     }
-
 }
 
 @Composable

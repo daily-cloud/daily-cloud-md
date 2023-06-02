@@ -19,14 +19,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.SupervisedUserCircle
-import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -60,117 +65,172 @@ import com.dailycloud.dailycloud.ui.theme.Primary
 @Composable
 fun EditProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    toProfile: () -> Unit,
+    updateProfile: () -> Unit,
+    backToProfile: () -> Unit,
 ) {
     val profileImageUrl = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-    val name by viewModel.name
-    val email by viewModel.email
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center
+
     ) {
-        Card(
+        IconButton(onClick = backToProfile) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = null,
+                tint = Color.Black,
+            )
+        }
+        Column(
             modifier = Modifier
-                .wrapContentSize(),
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 4.dp
-            ),
-            colors = CardDefaults.cardColors(containerColor = Color.White)
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
+            Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp)
+                    .wrapContentSize(),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 4.dp
+                ),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
-                Box(
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(220.dp)
-                            .border(BorderStroke(5.dp, SolidColor(Primary)), shape = CircleShape)
-                    ){
-                        AsyncImage(
-                            model = profileImageUrl,
-                            contentDescription = "Profile Image",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .size(200.dp)
-                                .clip(RoundedCornerShape(8.dp)).align(Alignment.Center)
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .size(56.dp)
-                            .background(color = Primary, shape = CircleShape)
-                            .align(Alignment.BottomEnd).clickable {  }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.CameraAlt,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(36.dp)
-                                .align(Alignment.Center),
-                            tint = Color.White,
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                val nameEdit = remember { mutableStateOf("") }
-                val emailState = remember { mutableStateOf(email) }
-
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(24.dp)
                 ) {
-                    OutlinedTextField(
-                        value = name,
-                        onValueChange = { nameEdit.value = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        label = { Text("Name") },
-                        leadingIcon = { Icon(Icons.Default.AccountCircle,
-                            contentDescription = "Name",
-                            tint = Primary) },
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Text
-                        ),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Primary,
-                            unfocusedBorderColor = Primary
-                        )
-                    )
+                    Box(
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(220.dp)
+                                .border(
+                                    BorderStroke(5.dp, SolidColor(Primary)),
+                                    shape = CircleShape
+                                )
+                        ) {
+                            AsyncImage(
+                                model = profileImageUrl,
+                                contentDescription = "Profile Image",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(200.dp)
+                                    .clip(RoundedCornerShape(8.dp)).align(Alignment.Center)
+                            )
+                        }
 
-                    OutlinedTextField(
-                        value = email,
-                        onValueChange = { emailState.value = it },
+                        val showDialog = remember { mutableStateOf(false) }
+
+                        Box(
+                            modifier = Modifier
+                                .size(56.dp)
+                                .background(color = Primary, shape = CircleShape)
+                                .align(Alignment.BottomEnd).clickable { showDialog.value = true }
+                        ) {
+
+                            if (showDialog.value) {
+                                AlertDialog(
+                                    onDismissRequest = { showDialog.value = false },
+                                    title = { Text("Dialog Title") },
+                                    text = { Text("Dialog Content") },
+                                    confirmButton = {
+                                        Column(Modifier.padding(8.dp).fillMaxWidth()){
+                                            Button(onClick = { showDialog.value = false },
+                                                Modifier.fillMaxWidth(),
+                                                colors = buttonColors(Primary)
+                                            ) {
+                                                Text("Galery")
+                                            }
+                                            Button(onClick = { showDialog.value = false },
+                                                Modifier.fillMaxWidth(),
+                                                colors = buttonColors(Primary)) {
+                                                Text("Camera")
+                                            }
+                                        }
+                                    },
+                                    dismissButton = null,
+                                )
+                            }
+
+                            Icon(
+                                imageVector = Icons.Default.CameraAlt,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .align(Alignment.Center),
+                                tint = Color.White,
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    val nameEdit = remember { mutableStateOf(viewModel.name.value) }
+                    val emailState = remember { mutableStateOf(viewModel.email.value) }
+
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        label = { Text("Email") },
-                        leadingIcon = { Icon(Icons.Filled.Email,
-                            contentDescription = "Email",
-                            tint = Primary) },
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            keyboardType = KeyboardType.Email
-                        ),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            focusedBorderColor = Primary,
-                            unfocusedBorderColor = Primary
+                    ) {
+                        OutlinedTextField(
+                            value = nameEdit.value,
+                            onValueChange = { nameEdit.value = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 16.dp),
+                            label = { Text("Name", color = Primary) },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.AccountCircle,
+                                    contentDescription = "Name",
+                                    tint = Primary
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Text
+                            ),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Primary,
+                                unfocusedBorderColor = Primary
+                            )
                         )
-                    )
+
+                        OutlinedTextField(
+                            value = emailState.value,
+                            onValueChange = { emailState.value = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 16.dp),
+                            label = { Text("Email", color = Primary) },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Filled.Email,
+                                    contentDescription = "Email",
+                                    tint = Primary
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions.Default.copy(
+                                keyboardType = KeyboardType.Email
+                            ),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = Primary,
+                                unfocusedBorderColor = Primary
+                            )
+                        )
+                    }
                 }
             }
+            Spacer(modifier = Modifier.height(24.dp))
+            CustomOutlinedButton(
+                onClick = { updateProfile() },
+                text = stringResource(R.string.update).uppercase(),
+                modifier = Modifier.fillMaxWidth()
+            )
         }
-        Spacer(modifier = Modifier.height(24.dp))
-        CustomOutlinedButton(onClick = { toProfile() }, text = stringResource(R.string.update).uppercase(), modifier = Modifier.fillMaxWidth())
     }
 }
