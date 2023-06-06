@@ -1,6 +1,11 @@
 package com.dailycloud.dailycloud.ui.screen.profile
 
+
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,16 +37,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,14 +50,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
+import coil.compose.rememberImagePainter
 import com.dailycloud.dailycloud.R
 import com.dailycloud.dailycloud.ui.components.CustomOutlinedButton
 import com.dailycloud.dailycloud.ui.theme.Primary
@@ -67,8 +64,16 @@ fun EditProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     updateProfile: () -> Unit,
     backToProfile: () -> Unit,
+    toCamera: () -> Unit,
 ) {
-    val profileImageUrl = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+
+    var profileImageUrl = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+    val showDialog = remember { mutableStateOf(false) }
+    val galleryLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+            profileImageUrl = it.toString()
+            showDialog.value = false
+        }
 
     Column(
         modifier = Modifier
@@ -114,17 +119,18 @@ fun EditProfileScreen(
                                     shape = CircleShape
                                 )
                         ) {
-                            AsyncImage(
-                                model = profileImageUrl,
+                            Image(
+                                painter = rememberImagePainter(
+                                        data  = Uri.parse(profileImageUrl)
+                                    ),
                                 contentDescription = "Profile Image",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .size(200.dp)
-                                    .clip(RoundedCornerShape(8.dp)).align(Alignment.Center)
+                                    .clip(CircleShape)
+                                    .align(Alignment.Center).align(Alignment.Center)
                             )
                         }
-
-                        val showDialog = remember { mutableStateOf(false) }
 
                         Box(
                             modifier = Modifier
@@ -136,17 +142,16 @@ fun EditProfileScreen(
                             if (showDialog.value) {
                                 AlertDialog(
                                     onDismissRequest = { showDialog.value = false },
-                                    title = { Text("Dialog Title") },
-                                    text = { Text("Dialog Content") },
+                                    title = { Text("Choose method") },
                                     confirmButton = {
                                         Column(Modifier.padding(8.dp).fillMaxWidth()){
-                                            Button(onClick = { showDialog.value = false },
+                                            Button(onClick = {galleryLauncher.launch("image/*")},
                                                 Modifier.fillMaxWidth(),
                                                 colors = buttonColors(Primary)
                                             ) {
                                                 Text("Galery")
                                             }
-                                            Button(onClick = { showDialog.value = false },
+                                            Button(onClick = { toCamera() },
                                                 Modifier.fillMaxWidth(),
                                                 colors = buttonColors(Primary)) {
                                                 Text("Camera")
@@ -161,7 +166,7 @@ fun EditProfileScreen(
                                 imageVector = Icons.Default.CameraAlt,
                                 contentDescription = null,
                                 modifier = Modifier
-                                    .size(36.dp)
+                                    .size(32.dp)
                                     .align(Alignment.Center),
                                 tint = Color.White,
                             )

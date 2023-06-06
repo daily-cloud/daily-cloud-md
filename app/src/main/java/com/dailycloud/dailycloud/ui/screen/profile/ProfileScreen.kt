@@ -1,6 +1,8 @@
 package com.dailycloud.dailycloud.ui.screen.profile
 
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -38,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import coil.compose.rememberImagePainter
 import com.dailycloud.dailycloud.R
 import com.dailycloud.dailycloud.ui.components.CustomOutlinedButton
 import com.dailycloud.dailycloud.ui.theme.Primary
@@ -80,13 +83,16 @@ fun ProfileScreen(
                             .size(220.dp)
                             .border(BorderStroke(5.dp, SolidColor(Primary)), shape = CircleShape)
                     ){
-                        AsyncImage(
-                            model = profileImageUrl,
+                        Image(
+                            painter = rememberImagePainter(
+                                data  = Uri.parse(profileImageUrl)
+                            ),
                             contentDescription = "Profile Image",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .size(200.dp)
-                                .clip(RoundedCornerShape(8.dp)).align(Alignment.Center)
+                                .clip(CircleShape)
+                                .align(Alignment.Center).align(Alignment.Center)
                         )
                     }
                     Box(
@@ -99,7 +105,7 @@ fun ProfileScreen(
                             imageVector = Icons.Default.Edit,
                             contentDescription = null,
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(32.dp)
                                 .align(Alignment.Center),
                             tint = Color.White,
                         )
@@ -115,7 +121,7 @@ fun ProfileScreen(
 
                 Text(
                     text = name,
-                    style = TextStyle(fontSize = 24.sp)
+                    style = TextStyle(fontSize = 20.sp)
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -127,7 +133,7 @@ fun ProfileScreen(
 
                 Text(
                     text = email,
-                    style = TextStyle(fontSize = 24.sp)
+                    style = TextStyle(fontSize = 20.sp)
                 )
             }
         }
@@ -136,8 +142,4 @@ fun ProfileScreen(
     }
 }
 
-@Composable
-fun ProfileContent(){
-
-}
 

@@ -128,7 +128,10 @@ fun NavGraph(
                 },
                 backToProfile = {
                     navController.navigate(Screen.Profile.route)
-                }
+                },
+                toCamera = {
+                    navController.navigate(Screen.Camera.route)
+                },
             )
         }
 
