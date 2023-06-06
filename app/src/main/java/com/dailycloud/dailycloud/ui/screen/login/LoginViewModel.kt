@@ -12,6 +12,7 @@ import com.dailycloud.dailycloud.data.DailyCloudRepository
 import com.dailycloud.dailycloud.ui.common.UiState
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -45,7 +46,12 @@ class LoginViewModel @Inject constructor(private val repository: DailyCloudRepos
 
                         }
                         is UiState.Success -> {
-                            toHome()
+                            it.data.user?.getIdToken(true)?.addOnSuccessListener { result ->
+                                viewModelScope.launch {
+                                    repository.saveToken(result.token!!)
+                                    toHome()
+                                }
+                            }
                         }
                         is UiState.Error -> {
 

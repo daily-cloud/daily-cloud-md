@@ -6,6 +6,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import com.dailycloud.dailycloud.data.CameraRepository
 import com.dailycloud.dailycloud.data.DailyCloudRepository
+import com.dailycloud.dailycloud.data.local.datastore.DataStoreManager
 import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -28,13 +29,15 @@ object MainModule {
         apiService: ApiService,
         googleSignInRequest: BeginSignInRequest,
         oneTapClient: SignInClient,
-        googleClient: GoogleSignInClient
+        googleClient: GoogleSignInClient,
+        dataStoreManager: DataStoreManager,
     ) = DailyCloudRepository(
         auth,
         apiService,
         googleSignInRequest,
         oneTapClient,
         googleClient,
+        dataStoreManager,
     )
 
     @Provides

@@ -1,7 +1,9 @@
 package com.dailycloud.dailycloud.data
 
+import com.dailycloud.dailycloud.data.local.datastore.DataStoreManager
 import com.dailycloud.dailycloud.data.local.model.Content
 import com.dailycloud.dailycloud.data.local.model.dummy.ContentData
+import com.dailycloud.dailycloud.data.remote.response.AddUserResponse
 import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.dailycloud.dailycloud.data.remote.service.AuthService
 import com.dailycloud.dailycloud.ui.common.UiState
@@ -15,6 +17,7 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
@@ -25,13 +28,21 @@ class DailyCloudRepository @Inject constructor(
     private val apiService: ApiService,
     private val googleSignInRequest: BeginSignInRequest,
     private val oneTapClient: SignInClient,
-    private val googleClient: GoogleSignInClient
+    private val googleClient: GoogleSignInClient,
+    private val dataStoreManager: DataStoreManager
 ) :
     AuthService
 {
 
     override val currentUser: FirebaseUser?
         get() = auth.currentUser
+
+    override val userToken: Flow<String>
+        get() = dataStoreManager.getToken()
+
+    suspend fun saveToken(token: String) {
+        dataStoreManager.setToken(token)
+    }
 
     override suspend fun login(email: String, password: String): Flow<UiState<AuthResult>> = flow {
         emit(UiState.Loading)
@@ -75,6 +86,20 @@ class DailyCloudRepository @Inject constructor(
         }
     }
 
+    suspend fun addUser(
+        uid: String,
+        email: String,
+        name: String,
+        birthday: Timestamp?,
+    ): Flow<UiState<AddUserResponse>> = flow {
+        emit(UiState.Loading)
+        try {
+            emit(UiState.Success(apiService.addUser(uid, email, name, birthday ?: Timestamp.now(), "Bearer ${userToken.first()}")))
+        } catch (e: Exception) {
+            emit(UiState.Error(e.message ?: "An unknown error occurred"))
+        }
+    }
+
     override suspend fun verifyEmail(email: String) {
         auth.currentUser?.sendEmailVerification()?.await()
     }
@@ -82,6 +107,7 @@ class DailyCloudRepository @Inject constructor(
     override suspend fun logout() {
         auth.signOut()
         googleClient.signOut()
+        dataStoreManager.setToken("")
     }
 
     private val contents = mutableListOf<Content>()

@@ -1,5 +1,6 @@
 package com.dailycloud.dailycloud.ui.screen.signup
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import com.dailycloud.dailycloud.data.DailyCloudRepository
 import com.dailycloud.dailycloud.ui.common.UiState
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,6 +64,7 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
 
     fun signUp(toHome: () -> Unit) {
         viewModelScope.launch {
+//            repository.addUser("hNOzp5pAcBgZUWqpldUWgG2PShk1", _email.value, _email.value, Timestamp.now())
             repository.register(_email.value, _password.value, _name.value, null, null)
                 .collect {
                     when (it) {
@@ -69,10 +72,16 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
 
                         }
                         is UiState.Success -> {
-                            toHome()
+                            it.data.user?.getIdToken(true)?.addOnSuccessListener { result ->
+                                viewModelScope.launch {
+                                    repository.saveToken(result.token!!)
+                                    repository.addUser(it.data.user!!.uid, _email.value, _email.value, Timestamp.now())
+                                    toHome()
+                                }
+                            }
                         }
                         is UiState.Error -> {
-
+                            Log.d("SignUpViewModel", it.errorMessage)
                         }
                     }
                 }
