@@ -1,7 +1,13 @@
 package com.dailycloud.dailycloud.ui.screen.profile
 
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -41,30 +47,39 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.dailycloud.dailycloud.R
 import com.dailycloud.dailycloud.ui.components.CustomOutlinedButton
 import com.dailycloud.dailycloud.ui.theme.Primary
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Objects
 
+@SuppressLint("RestrictedApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     updateProfile: () -> Unit,
     backToProfile: () -> Unit,
-    toCamera: () -> Unit,
 ) {
 
     var profileImageUrl = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
@@ -74,6 +89,46 @@ fun EditProfileScreen(
             profileImageUrl = it.toString()
             showDialog.value = false
         }
+
+    //==================================================================
+
+    fun Context.createImageFile(): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_" + timeStamp + "_"
+        val image = File.createTempFile(
+            imageFileName,
+            ".jpg",
+            externalCacheDir
+        )
+        return image
+    }
+
+    val context = LocalContext.current
+    val file = context.createImageFile()
+    val uri = FileProvider.getUriForFile(
+        Objects.requireNonNull(context),
+        "com.dailycloud.dailycloud" + ".provider", file
+    )
+
+
+    val cameraLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
+            profileImageUrl = uri.toString()
+            showDialog.value = false
+        }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        if (it) {
+            Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
+            cameraLauncher.launch(uri)
+        } else {
+            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    //=======================================================
 
     Column(
         modifier = Modifier
@@ -151,7 +206,16 @@ fun EditProfileScreen(
                                             ) {
                                                 Text("Galery")
                                             }
-                                            Button(onClick = { toCamera() },
+                                            Button(onClick = {
+                                                    val permissionCheckResult =
+                                                        ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                                                    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                                        cameraLauncher.launch(uri)
+                                                    } else {
+                                                        // Request a permission
+                                                        permissionLauncher.launch(Manifest.permission.CAMERA)
+                                                    }
+                                            },
                                                 Modifier.fillMaxWidth(),
                                                 colors = buttonColors(Primary)) {
                                                 Text("Camera")
