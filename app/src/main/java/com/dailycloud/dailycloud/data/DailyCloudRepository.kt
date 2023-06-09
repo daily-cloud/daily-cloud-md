@@ -165,4 +165,12 @@ class DailyCloudRepository @Inject constructor(
         }
     }
 
+    suspend fun uploadImage(image: MultipartBody.Part): Flow<UiState<UploadImageResponse>> = flow {
+        emit(UiState.Loading)
+        try {
+            emit(UiState.Success(apiService.uploadImage(image, "Bearer ${userToken.first()}")))
+        } catch (e: Exception) {
+            emit(UiState.Error(e.message ?: "An unknown error occurred"))
+        }
+    }
 }

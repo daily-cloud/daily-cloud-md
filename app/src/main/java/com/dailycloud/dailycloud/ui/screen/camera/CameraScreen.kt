@@ -1,6 +1,7 @@
 package com.dailycloud.dailycloud.ui.screen.camera
 
 import android.Manifest
+import android.app.Application
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -82,7 +83,7 @@ fun CameraScreen(
                     tint = Color.Transparent
                 )
             }
-            IconButton(onClick = { toResult() }) {
+            IconButton(onClick = { viewModel.takePhoto(context, Application(), toResult) }) {
                 Icon(
                     imageVector = Icons.Filled.Camera,
                     contentDescription = "Camera",
@@ -94,7 +95,7 @@ fun CameraScreen(
                 Icon(
                     imageVector = Icons.Filled.Cameraswitch,
                     contentDescription = "Switch Camera",
-                    tint = Color.White
+                    tint = Color.Transparent
                 )
             }
         }
