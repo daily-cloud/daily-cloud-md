@@ -91,7 +91,7 @@ fun JournalScreen(
                 .weight(1f),
         )
         CustomFilledButton(
-            onClick = { toCamera() },
+            onClick = { viewModel.onJournalSubmitted(toCamera) },
             modifier = Modifier.align(Alignment.End),
             text = stringResource(R.string.next)
         )

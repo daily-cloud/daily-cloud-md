@@ -1,11 +1,16 @@
 package com.dailycloud.dailycloud.data
 
+import android.util.Log
 import com.dailycloud.dailycloud.data.local.datastore.DataStoreManager
 import com.dailycloud.dailycloud.data.local.model.Content
+import com.dailycloud.dailycloud.data.local.model.Journal
 import com.dailycloud.dailycloud.data.local.model.dummy.ContentData
 import com.dailycloud.dailycloud.data.remote.response.AddUserResponse
+import com.dailycloud.dailycloud.data.remote.response.JournalsResponse
+import com.dailycloud.dailycloud.data.remote.response.UploadImageResponse
 import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.dailycloud.dailycloud.data.remote.service.AuthService
+import com.dailycloud.dailycloud.data.remote.service.JournalService
 import com.dailycloud.dailycloud.ui.common.UiState
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.BeginSignInResult
@@ -21,6 +26,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.tasks.await
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class DailyCloudRepository @Inject constructor(
@@ -31,7 +37,8 @@ class DailyCloudRepository @Inject constructor(
     private val googleClient: GoogleSignInClient,
     private val dataStoreManager: DataStoreManager
 ) :
-    AuthService
+    AuthService,
+    JournalService
 {
 
     override val currentUser: FirebaseUser?
@@ -53,7 +60,7 @@ class DailyCloudRepository @Inject constructor(
         }
     }
 
-        override suspend fun loginWithGoogle(googleCredential: AuthCredential): Flow<UiState<AuthResult>> = flow {
+    override suspend fun loginWithGoogle(googleCredential: AuthCredential): Flow<UiState<AuthResult>> = flow {
         emit(UiState.Loading)
         try {
             emit(UiState.Success(auth.signInWithCredential(googleCredential).await()))
@@ -126,7 +133,36 @@ class DailyCloudRepository @Inject constructor(
         }
     }
 
+    override suspend fun getJournals(): Flow<UiState<JournalsResponse>> = flow {
+        emit(UiState.Loading)
+        try {
+            emit(UiState.Success(apiService.getJournals("Bearer ${userToken.first()}")))
+        } catch (e: Exception) {
+            emit(UiState.Error(e.message ?: "An unknown error occurred"))
+        }
+    }
 
+    override suspend fun getJournal(id: String): Flow<UiState<Journal>> = flow {
+        emit(UiState.Loading)
+        try {
+            emit(UiState.Success(apiService.getJournal(id, "Bearer ${userToken.first()}")))
+        } catch (e: Exception) {
+            emit(UiState.Error(e.message ?: "An unknown error occurred"))
+        }
+    }
 
+    override suspend fun addJournal(
+        title: String,
+        content: String,
+        mood: String,
+        prediction: String
+    ): Flow<UiState<AddUserResponse>> = flow {
+        emit(UiState.Loading)
+        try {
+            emit(UiState.Success(apiService.addJournal(title, content, mood, prediction, "Bearer ${userToken.first()}")))
+        } catch (e: Exception) {
+            emit(UiState.Error(e.message ?: "An unknown error occurred"))
+        }
+    }
 
 }
