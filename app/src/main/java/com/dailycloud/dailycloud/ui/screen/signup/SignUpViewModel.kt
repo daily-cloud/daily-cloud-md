@@ -32,8 +32,11 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
     private val _confirmPassword = mutableStateOf("")
     val confirmPassword: State<String> get() = _confirmPassword
 
-    private val _name = mutableStateOf("")
-    val name: State<String> get() = _name
+    private val _firstName = mutableStateOf("")
+    val firstName: State<String> get() = _firstName
+
+    private val _lastName = mutableStateOf("")
+    val lastName: State<String> get() = _lastName
 
     private val _isAgree = mutableStateOf(false)
     val isAgree: State<Boolean> get() = _isAgree
@@ -50,8 +53,12 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
         _confirmPassword.value = confirmPassword
     }
 
-    fun onNameChanged(name: String) {
-        _name.value = name
+    fun onFirstNameChanged(name: String) {
+        _firstName.value = name
+    }
+
+    fun onLastNameChanged(name: String) {
+        _lastName.value = name
     }
 
     fun onAgreeChanged(isAgree: Boolean) {
@@ -65,7 +72,7 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
     fun signUp(toHome: () -> Unit) {
         viewModelScope.launch {
 //            repository.addUser("hNOzp5pAcBgZUWqpldUWgG2PShk1", _email.value, _email.value, Timestamp.now())
-            repository.register(_email.value, _password.value, _name.value, null, null)
+            repository.register(_email.value, _password.value, "${_firstName.value} ${_lastName.value}", null, null)
                 .collect {
                     when (it) {
                         is UiState.Loading -> {

@@ -24,6 +24,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.dailycloud.dailycloud.R
 import com.dailycloud.dailycloud.ui.components.CustomFilledButton
 import com.dailycloud.dailycloud.ui.components.EmailField
+import com.dailycloud.dailycloud.ui.components.NameField
 import com.dailycloud.dailycloud.ui.components.PasswordField
 import com.dailycloud.dailycloud.ui.components.SocialButton
 import com.dailycloud.dailycloud.ui.theme.Primary
@@ -52,6 +54,8 @@ fun SignUpScreen(
     toHome: () -> Unit,
     viewModel: SignUpViewModel = hiltViewModel(),
 ) {
+    val firstName by viewModel.firstName
+    val lastName by viewModel.lastName
     val email by viewModel.email
     val password by viewModel.password
     val confirmPassword by viewModel.confirmPassword
@@ -85,12 +89,16 @@ fun SignUpScreen(
                 password = password,
                 confirmPassword = confirmPassword,
                 isAgree = isAgree,
+                onFirstNameChange = viewModel::onFirstNameChanged,
+                onLastNameChange = viewModel::onLastNameChanged,
                 onEmailChange = viewModel::onEmailChanged,
                 onPasswordChange = viewModel::onPasswordChanged,
                 onConfirmPasswordChange = viewModel::onConfirmPasswordChanged,
                 onAgreeChange = viewModel::onAgreeChanged,
                 onSignUp = { viewModel.signUp(toHome)  },
                 toLogin = toLogin,
+                firstName = firstName,
+                lastName = lastName
             )
         } else {
             MultiSignUpContent(
@@ -155,10 +163,14 @@ fun MultiSignUpContent(
 @Composable
 fun SignUpEmailContent(
     modifier: Modifier = Modifier,
+    firstName: String,
+    lastName: String,
     email: String,
     password: String,
     confirmPassword: String,
     isAgree: Boolean,
+    onFirstNameChange: (String) -> Unit,
+    onLastNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
@@ -177,6 +189,20 @@ fun SignUpEmailContent(
             Text(stringResource(R.string.login), color = Primary, modifier = Modifier.clickable { toLogin() })
         }
         Spacer(modifier = Modifier.height(48.dp))
+        NameField(
+            value = firstName,
+            text = "First Name",
+            onValueChange = onFirstNameChange,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        NameField(
+            value = lastName,
+            text = "Last Name",
+            onValueChange = onLastNameChange,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         EmailField(
             value = email,
             onValueChange = onEmailChange,
