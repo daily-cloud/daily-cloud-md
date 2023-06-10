@@ -52,10 +52,9 @@ interface ApiService {
     @FormUrlEncoded
     @POST("api/users/signup")
     suspend fun addUser(
-        @Field("uid") uid: String,
         @Field("email") email: String,
         @Field("name") name: String,
-        @Field("birthday") birthday: Timestamp,
+        @Field("birthday") birthday: String,
         @Header("Authorization") token: String
     ): AddUserResponse
 

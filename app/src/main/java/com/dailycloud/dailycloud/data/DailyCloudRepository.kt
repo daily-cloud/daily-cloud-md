@@ -94,14 +94,13 @@ class DailyCloudRepository @Inject constructor(
     }
 
     suspend fun addUser(
-        uid: String,
         email: String,
         name: String,
-        birthday: Timestamp?,
+        birthday: String?,
     ): Flow<UiState<AddUserResponse>> = flow {
         emit(UiState.Loading)
         try {
-            emit(UiState.Success(apiService.addUser(uid, email, name, birthday ?: Timestamp.now(), "Bearer ${userToken.first()}")))
+            emit(UiState.Success(apiService.addUser(email, name, birthday ?: "01-01-2001", "Bearer ${userToken.first()}")))
         } catch (e: Exception) {
             emit(UiState.Error(e.message ?: "An unknown error occurred"))
         }

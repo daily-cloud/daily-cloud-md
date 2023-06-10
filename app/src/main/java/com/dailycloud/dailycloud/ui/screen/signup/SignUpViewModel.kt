@@ -71,7 +71,6 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
 
     fun signUp(toHome: () -> Unit) {
         viewModelScope.launch {
-//            repository.addUser("hNOzp5pAcBgZUWqpldUWgG2PShk1", _email.value, _email.value, Timestamp.now())
             repository.register(_email.value, _password.value, "${_firstName.value} ${_lastName.value}", null, null)
                 .collect {
                     when (it) {
@@ -82,8 +81,20 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
                             it.data.user?.getIdToken(true)?.addOnSuccessListener { result ->
                                 viewModelScope.launch {
                                     repository.saveToken(result.token!!)
-                                    repository.addUser(it.data.user!!.uid, _email.value, _email.value, Timestamp.now())
-                                    toHome()
+                                    repository.addUser(_email.value, _email.value, "01-01-2001").collect {
+                                        when (it) {
+                                            is UiState.Loading -> {
+
+                                            }
+                                            is UiState.Success -> {
+                                                toHome()
+                                            }
+                                            is UiState.Error -> {
+                                                Log.d("SignUpViewModel", it.errorMessage)
+                                            }
+                                        }
+                                    }
+//                                    toHome()
                                 }
                             }
                         }
