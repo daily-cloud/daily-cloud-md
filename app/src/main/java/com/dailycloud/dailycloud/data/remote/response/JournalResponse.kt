@@ -1,13 +1,12 @@
 package com.dailycloud.dailycloud.data.remote.response
 
 import com.dailycloud.dailycloud.data.local.model.Journal
-import com.google.firebase.Timestamp
 import com.google.gson.annotations.SerializedName
 
-data class JournalsResponse(
+data class JournalResponse(
 
-	@field:SerializedName("journals")
-	val data: List<Journal?>? = null,
+	@field:SerializedName("journal")
+	val journal: Journal? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null,

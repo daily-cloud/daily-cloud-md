@@ -1,5 +1,7 @@
 package com.dailycloud.dailycloud.ui.screen.home
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,9 +17,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +37,7 @@ import com.dailycloud.dailycloud.ui.components.MoodChoices
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    toJournal: () -> Unit,
+    toJournal: (String?) -> Unit,
     toContent: (String) -> Unit,
 ) {
     val activitySelected by viewModel.selectedActivity
@@ -42,6 +46,13 @@ fun HomeScreen(
     val customActivity by viewModel.customActivity
     val journalContent by viewModel.journalContent
     val contents by viewModel.contents
+    val quote by viewModel.quote
+    val journal by viewModel.journal
+    val context = LocalContext.current
+
+    LaunchedEffect(null) {
+        viewModel.getTodayJournal()
+    }
 
     Column(modifier = modifier) {
         Text("Hello, Cloudie!", style = MaterialTheme.typography.displaySmall, modifier = Modifier.padding(16.dp))
@@ -54,7 +65,13 @@ fun HomeScreen(
             onCustomActivityChanged = viewModel::onCustomActivityChanged,
             onCustomFinished = viewModel::onCustomFinished
         )
-        JournalPreview(journalContent = journalContent, toJournal = toJournal)
+        JournalPreview(journalContent = journalContent) {
+            if (activitySelected == null) {
+                showToast(context, "Please select activity first")
+            } else {
+                toJournal(journal?.journalId)
+            }
+        }
         Text("For You", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 16.dp))
         LazyRow(
             contentPadding = PaddingValues(16.dp),
@@ -72,12 +89,15 @@ fun HomeScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            "“This is Quote of the Day”\n" +
-                    "-Daily Cloud",
+            quote ?: stringResource(id = R.string.content_quote),
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
     }
 
+}
+
+private fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }

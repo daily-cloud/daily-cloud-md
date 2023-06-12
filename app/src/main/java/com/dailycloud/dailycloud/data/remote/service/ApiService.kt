@@ -2,10 +2,13 @@ package com.dailycloud.dailycloud.data.remote.service
 
 import com.dailycloud.dailycloud.data.local.model.Content
 import com.dailycloud.dailycloud.data.local.model.Journal
+import com.dailycloud.dailycloud.data.remote.response.AddJournalResponse
 import com.dailycloud.dailycloud.data.remote.response.AddUserResponse
 import com.dailycloud.dailycloud.data.remote.response.ArticlesResponse
+import com.dailycloud.dailycloud.data.remote.response.JournalResponse
 import com.dailycloud.dailycloud.data.remote.response.JournalsResponse
 import com.dailycloud.dailycloud.data.remote.response.QuotesResponse
+import com.dailycloud.dailycloud.data.remote.response.TodayJournalResponse
 import com.dailycloud.dailycloud.data.remote.response.UpdateUserResponse
 import com.dailycloud.dailycloud.data.remote.response.UploadImageResponse
 import com.dailycloud.dailycloud.data.remote.response.UserDetailResponse
@@ -20,11 +23,14 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
     @GET("api/journals")
     suspend fun getJournals(
+        @Query("month") month: Int,
+        @Query("year") year: Int,
         @Header("Authorization") token: String
     ): JournalsResponse
 
@@ -32,17 +38,21 @@ interface ApiService {
     suspend fun getJournal(
         @Path("id") id: String,
         @Header("Authorization") token: String
-    ): Journal
+    ): JournalResponse
+
+    @GET("api/journals/check")
+    suspend fun getTodayJournal(
+        @Header("Authorization") token: String
+    ): TodayJournalResponse
 
     @FormUrlEncoded
     @POST("api/journals")
     suspend fun addJournal(
-        @Field("title") title: String,
+        @Field("activity") activity: String,
         @Field("content") content: String,
         @Field("mood") mood: String,
-        @Field("prediction") prediction: String,
         @Header("Authorization") token: String
-    ): AddUserResponse
+    ): AddJournalResponse
 
     @GET("api/users/details")
     suspend fun getUserDetails(
@@ -68,7 +78,7 @@ interface ApiService {
     @Multipart
     @POST("api/users/uploadImage")
     suspend fun uploadImage(
-        @Part("photo") photo: MultipartBody.Part,
+        @Part photo: MultipartBody.Part,
         @Header("Authorization") token: String
     ): UploadImageResponse
 

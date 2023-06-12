@@ -15,6 +15,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "us
 class DataStoreManager @Inject constructor(private val dataStore: DataStore<Preferences>) {
 
     private val tokenPref = stringPreferencesKey("token")
+    private val todayActivity = stringPreferencesKey("today_activity")
 
     suspend fun setToken(token: String) {
         dataStore.edit { preferences ->
@@ -25,6 +26,18 @@ class DataStoreManager @Inject constructor(private val dataStore: DataStore<Pref
     fun getToken(): Flow<String> {
         return dataStore.data.map { preferences ->
             preferences[tokenPref] ?: ""
+        }
+    }
+
+    suspend fun setTodayActivity(activity: String) {
+        dataStore.edit { preferences ->
+            preferences[todayActivity] = activity
+        }
+    }
+
+    fun getTodayActivity(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[todayActivity] ?: ""
         }
     }
 }

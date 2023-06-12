@@ -37,6 +37,21 @@ object Util {
         return dateFormat.format(Date(this))
     }
 
+    fun Long.toDay(): Int {
+        val dateFormat = SimpleDateFormat("dd", Locale.getDefault())
+        return dateFormat.format(Date(this)).toInt()
+    }
+
+    fun Long.toMonth(): Int {
+        val dateFormat = SimpleDateFormat("MM", Locale.getDefault())
+        return dateFormat.format(Date(this)).toInt()
+    }
+
+    fun Long.toYear(): Int {
+        val dateFormat = SimpleDateFormat("yyyy", Locale.getDefault())
+        return dateFormat.format(Date(this)).toInt()
+    }
+
     fun Int.dpToPx(): Int {
         val scale = Resources.getSystem().displayMetrics.density
         return (this * scale + 0.5f).toInt()

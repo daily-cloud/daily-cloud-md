@@ -28,15 +28,17 @@ class MainViewModel @Inject constructor(private val repository: DailyCloudReposi
                 viewModelScope.launch {
                     Log.d("MainViewModel", "Token: ${it.token}")
                     repository.saveToken(it.token!!)
+                    _isLoading.value = false
                 }
             }
         } else {
             _startDestination.value = Screen.GetStarted.route
             viewModelScope.launch {
                 repository.saveToken("")
+                _isLoading.value = false
             }
         }
-        _isLoading.value = false
+
     }
 
 }

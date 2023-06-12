@@ -71,7 +71,11 @@ fun NavGraph(
         composable(Screen.Home.route) {
             HomeScreen(
                 toJournal = {
-                    navController.navigate(Screen.Journal.route)
+                    if (it != null) {
+                        navController.navigate(Screen.Journal.createRoute(it))
+                    } else {
+                        navController.navigate(Screen.Journal.route)
+                    }
                 },
                 toContent = {
                     navController.navigate(Screen.Content.createRoute(it))
@@ -80,17 +84,16 @@ fun NavGraph(
         }
         composable(Screen.Camera.route) {
             CameraScreen(
-                toResult = {
-                    navController.navigate(Screen.Result.route) {
-                        popUpTo(Screen.Journal.route) { inclusive = true }
-                    }
+                toJournal = {
+                    navController.previousBackStackEntry?.savedStateHandle?.set("mood", it)
+                    navController.popBackStack()
                 }
             )
         }
         composable(Screen.History.route) {
             HistoryScreen(
                 toJournal = {
-                    navController.navigate(Screen.Journal.route)
+                    navController.navigate(Screen.Journal.createRoute(it))
                 }
             )
         }
@@ -101,8 +104,13 @@ fun NavGraph(
                 }
             )
         }
-        composable(Screen.Result.route) {
+        composable(
+            route = Screen.Result.route,
+            arguments = listOf(navArgument("id") { type = NavType.StringType } ),
+        ) {
+            val id = it.arguments?.getString("id")
             ResultScreen(
+                id = id ?: "Error",
                 toHome = {
                     navController.navigateUp()
                 }
@@ -129,7 +137,12 @@ fun NavGraph(
             )
         }
 
-        composable(Screen.Journal.route,) {
+        composable(
+            route = Screen.Journal.route,
+            arguments = listOf(navArgument("journalId") { type = NavType.StringType } ),
+        ) {
+            val mood = it.savedStateHandle.get<String>("mood")
+            val id = it.arguments?.getString("journalId")
             JournalScreen(
                 toHome = {
                     navController.navigateUp()
@@ -137,6 +150,13 @@ fun NavGraph(
                 toCamera = {
                     navController.navigate(Screen.Camera.route)
                 },
+                toResult = { result ->
+                    navController.navigate(Screen.Result.createRoute(result.journalId!!)) {
+                        popUpTo(Screen.Journal.route) { inclusive = true }
+                    }
+                },
+                mood = mood,
+                journalId = id
             )
         }
         composable(

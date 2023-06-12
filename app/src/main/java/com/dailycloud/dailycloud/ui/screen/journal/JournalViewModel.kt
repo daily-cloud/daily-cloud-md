@@ -7,8 +7,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dailycloud.dailycloud.data.DailyCloudRepository
+import com.dailycloud.dailycloud.data.local.model.Journal
+import com.dailycloud.dailycloud.data.remote.response.AddJournalResponse
+import com.dailycloud.dailycloud.data.remote.response.AddUserResponse
 import com.dailycloud.dailycloud.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,22 +22,47 @@ class JournalViewModel @Inject constructor(private val repository: DailyCloudRep
     private val _journalContent: MutableState<String> = mutableStateOf("")
     val journalContent: State<String> = _journalContent
 
+    private val _journalContentEnabled: MutableState<Boolean> = mutableStateOf(true)
+    val journalContentEnabled: State<Boolean> = _journalContentEnabled
+
+    private val _journal: MutableState<Journal?> = mutableStateOf(null)
+    val journal: State<Journal?> = _journal
+
     fun onJournalContentChanged(content: String) {
         _journalContent.value = content
     }
 
-    fun onJournalSubmitted(toCamera: () -> Unit,) {
+    fun onJournalSubmitted(toResult: (AddJournalResponse) -> Unit, mood: String) {
         viewModelScope.launch {
             repository.addJournal(
-                title = "title",
+                activity = repository.todayActivity.first(),
                 content = _journalContent.value,
-                mood = "mood",
-                prediction = "prediction",
+                mood = mood,
             ).collect {
                 when (it) {
                     is UiState.Loading -> {  }
-                    is UiState.Success -> { toCamera() }
-                    is UiState.Error -> { Log.e("JournalViewModel", "Error: ${it.errorMessage}") }
+                    is UiState.Success -> { toResult(it.data) }
+                    is UiState.Error -> {
+                        Log.e("JournalViewModel", "Error: ${it.errorMessage}")
+                    }
+                }
+            }
+        }
+    }
+
+    fun getJournal(id: String) {
+        viewModelScope.launch {
+            repository.getJournal(id).collect {
+                when (it) {
+                    is UiState.Loading -> {  }
+                    is UiState.Success -> {
+                        Log.d("JournalViewModel", "Success: ${it.data}")
+                        _journal.value = it.data.journal
+                        _journalContent.value = it.data.journal?.content ?: "An Error Occurred"
+                        _journalContentEnabled.value = false
+                    }
+                    is UiState.Error -> {
+                        Log.e("JournalViewModel", "Error: ${it.errorMessage}") }
                 }
             }
         }
