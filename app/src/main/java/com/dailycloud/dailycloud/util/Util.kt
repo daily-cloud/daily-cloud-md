@@ -1,6 +1,7 @@
 package com.dailycloud.dailycloud.util
 
 import android.app.Application
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -56,6 +57,19 @@ object Util {
         ) mediaDir else application.filesDir
 
         return File(outputDirectory, "$timeStamp.jpg")
+    }
+
+    fun Context.createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat(
+            "dd-MMM-yyyy",
+            Locale.US
+        ).format(System.currentTimeMillis())
+
+        return File.createTempFile(
+            timeStamp,
+            ".jpg",
+            externalCacheDir
+        )
     }
 
     fun reduceFileImage(file: File): File {

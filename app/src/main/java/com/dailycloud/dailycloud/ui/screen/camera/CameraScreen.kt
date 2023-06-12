@@ -41,7 +41,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 fun CameraScreen(
     modifier: Modifier = Modifier,
     viewModel: CameraViewModel = hiltViewModel(),
-    toResult: () -> Unit,
+    toJournal: (String) -> Unit,
 ) {
 
     val permissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
@@ -83,7 +83,7 @@ fun CameraScreen(
                     tint = Color.Transparent
                 )
             }
-            IconButton(onClick = { viewModel.takePhoto(context, Application(), toResult) }) {
+            IconButton(onClick = { viewModel.takePhoto(context, toJournal) }) {
                 Icon(
                     imageVector = Icons.Filled.Camera,
                     contentDescription = "Camera",

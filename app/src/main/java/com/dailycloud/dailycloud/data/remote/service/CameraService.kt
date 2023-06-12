@@ -11,6 +11,6 @@ import java.io.File
 interface CameraService {
 
     suspend fun showCameraPreview(previewView: PreviewView, lifecycleOwner: LifecycleOwner)
-    suspend fun takePicture(context: Context, application: Application, upload: (File) -> Unit)
+    suspend fun takePicture(context: Context, upload: (File, String) -> Unit)
 
 }

@@ -3,6 +3,7 @@ package com.dailycloud.dailycloud.ui.screen.camera
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -30,9 +31,9 @@ class CameraViewModel @Inject constructor(private val repository: CameraReposito
         }
     }
 
-    fun takePhoto(context: Context, application: Application, toResult: () -> Unit) {
+    fun takePhoto(context: Context, toJournal: (String) -> Unit) {
         viewModelScope.launch {
-            repository.takePicture(context, application) { file ->
+            repository.takePicture(context) { file, result ->
                 val compressFile = reduceFileImage(file)
                 val requestImageFile = compressFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
@@ -40,15 +41,18 @@ class CameraViewModel @Inject constructor(private val repository: CameraReposito
                     compressFile.name,
                     requestImageFile
                 )
-                viewModelScope.launch {
-                    repo.uploadImage(imageMultipart).collect {
-                        when (it) {
-                            is UiState.Loading -> {  }
-                            is UiState.Success -> { toResult() }
-                            is UiState.Error -> { Log.e("UploadImage: ", it.errorMessage) }
-                        }
-                    }
-                }
+                toJournal(result)
+//                Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
+//                viewModelScope.launch {
+//                    repo.addJournal("", "", result, "")
+//                    repo.uploadImage(imageMultipart).collect {
+//                        when (it) {
+//                            is UiState.Loading -> {  }
+//                            is UiState.Success -> { toResult() }
+//                            is UiState.Error -> { Log.e("UploadImage: ", it.errorMessage) }
+//                        }
+//                    }
+//                }
             }
         }
     }

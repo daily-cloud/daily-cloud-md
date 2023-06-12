@@ -2,6 +2,9 @@ package com.dailycloud.dailycloud.data
 
 import android.app.Application
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.ThumbnailUtils
 import android.util.Log
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -14,7 +17,9 @@ import androidx.lifecycle.LifecycleOwner
 import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.dailycloud.dailycloud.data.remote.service.CameraService
 import com.dailycloud.dailycloud.ui.common.UiState
+import com.dailycloud.dailycloud.util.MLHelper
 import com.dailycloud.dailycloud.util.Util
+import com.dailycloud.dailycloud.util.Util.createImageFile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.io.File
@@ -36,19 +41,28 @@ class CameraRepository @Inject constructor(
             cameraProvider.bindToLifecycle(
                 lifecycleOwner,
                 cameraSelector,
-                cameraPreview
+                cameraPreview,
+                imageCapture
             )
         } catch (e: Exception) {
             //
         }
     }
 
-    override suspend fun takePicture(context: Context, application: Application, upload: (File) -> Unit) {
-        val file = Util.createFile(application)
+    override suspend fun takePicture(context: Context, upload: (File, String) -> Unit) {
+        val file = context.createImageFile()
         val outputFileOptions = ImageCapture.OutputFileOptions.Builder(file).build()
         imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(context), object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                upload(file)
+                var bitmap = BitmapFactory.decodeFile(file.path)
+                val dimension = minOf(bitmap.width, bitmap.height)
+                bitmap = ThumbnailUtils.extractThumbnail(bitmap, dimension, dimension)
+                bitmap = Bitmap.createScaledBitmap(bitmap, 48, 48, false)
+                val classifier = MLHelper(context)
+                classifier.classifyImage(bitmap)
+                classifier.result?.let {
+                    upload(file, it)
+                }
             }
 
             override fun onError(exception: ImageCaptureException) {
