@@ -63,6 +63,7 @@ class DailyCloudRepository @Inject constructor(
 
     suspend fun saveTodayActivity(activity: String) {
         dataStoreManager.setTodayActivity(activity)
+    }
 
     suspend fun getDetailUser() : Flow<UiState<UserDetailResponse>> = flow{
         emit(UiState.Loading)

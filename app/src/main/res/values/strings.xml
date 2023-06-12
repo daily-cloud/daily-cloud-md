@@ -39,4 +39,5 @@
     <string name="journal_detected">We detected that you are depressed, kindly contact nearby doctor</string>
     <string name="journal_not_detected">You are not depressed, we hope you stay healthy</string>
     <string name="track_your_activities">Track your activities</string>
+    <string name="daily_story">Daily Story</string>
 </resources>

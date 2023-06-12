@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen().setKeepVisibleCondition { viewModel.isLoading.value }
 
         setContent {
-            DailyCloudTheme {
+            DailyCloudTheme(darkTheme = false) {
                 val startDestination by viewModel.startDestination
                 DailyCloudApp(startDestination = startDestination)
             }

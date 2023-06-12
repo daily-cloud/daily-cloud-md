@@ -32,12 +32,14 @@ fun CustomFilledButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String,
+    enabled: Boolean = true,
 ) {
     Button(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(containerColor = Primary),
         shape = RoundedCornerShape(8.dp),
         contentPadding = PaddingValues(16.dp),
+        enabled = enabled,
         onClick = onClick
     ) {
         Text(text, color = Color.White, fontWeight = FontWeight.SemiBold)
@@ -49,12 +51,14 @@ fun CustomOutlinedButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String,
+    enabled: Boolean = true,
 ) {
     OutlinedButton(
         modifier = modifier,
         border = BorderStroke(1.dp, Primary),
         shape = RoundedCornerShape(8.dp),
         contentPadding = PaddingValues(16.dp),
+        enabled = enabled,
         onClick = onClick
     ) {
         Text(text, color = Primary, fontWeight = FontWeight.SemiBold)

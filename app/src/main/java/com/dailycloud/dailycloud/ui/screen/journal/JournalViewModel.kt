@@ -28,11 +28,15 @@ class JournalViewModel @Inject constructor(private val repository: DailyCloudRep
     private val _journal: MutableState<Journal?> = mutableStateOf(null)
     val journal: State<Journal?> = _journal
 
+    private val _isJournalSubmitted: MutableState<Boolean> = mutableStateOf(false)
+    val isJournalSubmitted: State<Boolean> = _isJournalSubmitted
+
     fun onJournalContentChanged(content: String) {
         _journalContent.value = content
     }
 
     fun onJournalSubmitted(toResult: (AddJournalResponse) -> Unit, mood: String) {
+        _isJournalSubmitted.value = true
         viewModelScope.launch {
             repository.addJournal(
                 activity = repository.todayActivity.first(),

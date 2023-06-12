@@ -53,6 +53,9 @@ class HistoryViewModel @Inject constructor(private val repository: DailyCloudRep
 
     init {
         getJournals(System.currentTimeMillis())
+        _selectedDateJournal.value = currentJournals.value.find {
+            it?.date!!.toDay() == System.currentTimeMillis().toDay()
+        }
     }
 
     private fun getJournals(date: Long) {

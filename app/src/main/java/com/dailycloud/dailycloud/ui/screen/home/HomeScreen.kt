@@ -92,7 +92,7 @@ fun HomeScreen(
             quote ?: stringResource(id = R.string.content_quote),
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
         )
     }
 

@@ -67,6 +67,7 @@ fun JournalScreen(
     val content by viewModel.journalContent
     val enabled by viewModel.journalContentEnabled
     val journal by viewModel.journal
+    val isJournalSubmitted by viewModel.isJournalSubmitted
 
     Column(modifier = modifier
         .fillMaxSize()
@@ -78,7 +79,7 @@ fun JournalScreen(
                 contentDescription = "Back"
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Text("Journal", style = MaterialTheme.typography.displaySmall)
+            Text(stringResource(R.string.daily_story), style = MaterialTheme.typography.displaySmall)
         }
         Spacer(modifier = Modifier.height(16.dp))
         Column(
@@ -100,6 +101,7 @@ fun JournalScreen(
             value = content,
             onValueChange = viewModel::onJournalContentChanged,
             enabled = enabled,
+            textStyle = MaterialTheme.typography.bodyLarge,
             decorationBox = { innerTextField ->
                 Box() {
                     if (content.isEmpty()) {
@@ -125,7 +127,8 @@ fun JournalScreen(
                     }
                 },
                 modifier = Modifier.align(Alignment.End),
-                text = if (mood != null) stringResource(R.string.next) else "Take Picture"
+                text = if (mood != null) stringResource(R.string.next) else "Take Picture",
+                enabled = !isJournalSubmitted
             )
         }
     }
