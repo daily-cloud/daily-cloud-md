@@ -123,9 +123,6 @@ fun NavGraph(
 
         composable(Screen.EditProfile.route) {
             EditProfileScreen(
-                updateProfile = {
-                    navController.navigate(Screen.Profile.route)
-                },
                 backToProfile = {
                     navController.navigate(Screen.Profile.route)
                 },

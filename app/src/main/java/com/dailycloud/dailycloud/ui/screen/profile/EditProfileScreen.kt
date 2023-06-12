@@ -78,9 +78,10 @@ import java.util.Objects
 @Composable
 fun EditProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    updateProfile: () -> Unit,
     backToProfile: () -> Unit,
 ) {
+
+    val nameEdit = remember { mutableStateOf(viewModel.name.value) }
 
     var profileImageUrl = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
     val showDialog = remember { mutableStateOf(false) }
@@ -92,6 +93,7 @@ fun EditProfileScreen(
 
     //==================================================================
 
+    @SuppressLint("SimpleDateFormat")
     fun Context.createImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName = "JPEG_" + timeStamp + "_"
@@ -239,9 +241,6 @@ fun EditProfileScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    val nameEdit = remember { mutableStateOf(viewModel.name.value) }
-                    val emailState = remember { mutableStateOf(viewModel.email.value) }
-
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -268,35 +267,12 @@ fun EditProfileScreen(
                                 unfocusedBorderColor = Primary
                             )
                         )
-
-                        OutlinedTextField(
-                            value = emailState.value,
-                            onValueChange = { emailState.value = it },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 16.dp),
-                            label = { Text("Email", color = Primary) },
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Filled.Email,
-                                    contentDescription = "Email",
-                                    tint = Primary
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                keyboardType = KeyboardType.Email
-                            ),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                focusedBorderColor = Primary,
-                                unfocusedBorderColor = Primary
-                            )
-                        )
                     }
                 }
             }
             Spacer(modifier = Modifier.height(24.dp))
             CustomOutlinedButton(
-                onClick = { updateProfile() },
+                onClick = { viewModel.updateUser(backToProfile, nameEdit.value) },
                 text = stringResource(R.string.update).uppercase(),
                 modifier = Modifier.fillMaxWidth()
             )

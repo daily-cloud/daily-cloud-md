@@ -7,7 +7,9 @@ import com.dailycloud.dailycloud.data.local.model.Journal
 import com.dailycloud.dailycloud.data.local.model.dummy.ContentData
 import com.dailycloud.dailycloud.data.remote.response.AddUserResponse
 import com.dailycloud.dailycloud.data.remote.response.JournalsResponse
+import com.dailycloud.dailycloud.data.remote.response.UpdateUserResponse
 import com.dailycloud.dailycloud.data.remote.response.UploadImageResponse
+import com.dailycloud.dailycloud.data.remote.response.UserDetailResponse
 import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.dailycloud.dailycloud.data.remote.service.AuthService
 import com.dailycloud.dailycloud.data.remote.service.JournalService
@@ -49,6 +51,15 @@ class DailyCloudRepository @Inject constructor(
 
     suspend fun saveToken(token: String) {
         dataStoreManager.setToken(token)
+    }
+
+    suspend fun getDetailUser() : Flow<UiState<UserDetailResponse>> = flow{
+        emit(UiState.Loading)
+        try {
+            emit(UiState.Success(apiService.getUserDetails("Bearer ${userToken.first()}")))
+        } catch (e: Exception) {
+            emit(UiState.Error(e.message ?: "An unknown error occurred"))
+        }
     }
 
     override suspend fun login(email: String, password: String): Flow<UiState<AuthResult>> = flow {
@@ -101,6 +112,17 @@ class DailyCloudRepository @Inject constructor(
         emit(UiState.Loading)
         try {
             emit(UiState.Success(apiService.addUser(email, name, birthday ?: "01-01-2001", "Bearer ${userToken.first()}")))
+        } catch (e: Exception) {
+            emit(UiState.Error(e.message ?: "An unknown error occurred"))
+        }
+    }
+
+    suspend fun updateUser(
+        name: String,
+    ): Flow<UiState<UpdateUserResponse>> = flow {
+        emit(UiState.Loading)
+        try {
+            emit(UiState.Success(apiService.updateUser(name, "Bearer ${userToken.first()}")))
         } catch (e: Exception) {
             emit(UiState.Error(e.message ?: "An unknown error occurred"))
         }

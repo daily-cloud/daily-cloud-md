@@ -61,10 +61,7 @@ interface ApiService {
     @FormUrlEncoded
     @PUT("api/users/update")
     suspend fun updateUser(
-        @Field("uid") uid: String,
-        @Field("email") email: String,
         @Field("name") name: String,
-        @Field("birthday") birthday: Timestamp,
         @Header("Authorization") token: String
     ): UpdateUserResponse
 

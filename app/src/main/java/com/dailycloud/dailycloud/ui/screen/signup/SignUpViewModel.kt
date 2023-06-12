@@ -81,7 +81,7 @@ class SignUpViewModel @Inject constructor(private val repository: DailyCloudRepo
                             it.data.user?.getIdToken(true)?.addOnSuccessListener { result ->
                                 viewModelScope.launch {
                                     repository.saveToken(result.token!!)
-                                    repository.addUser(_email.value, _email.value, "01-01-2001").collect {
+                                    repository.addUser(_email.value, "${_firstName.value} ${_lastName.value}", "01-01-2001").collect {
                                         when (it) {
                                             is UiState.Loading -> {
 
