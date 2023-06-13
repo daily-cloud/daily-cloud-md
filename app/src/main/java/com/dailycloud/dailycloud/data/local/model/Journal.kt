@@ -1,6 +1,5 @@
 package com.dailycloud.dailycloud.data.local.model
 
-import com.dailycloud.dailycloud.util.Util.toDate
 import com.google.firebase.Timestamp
 import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat

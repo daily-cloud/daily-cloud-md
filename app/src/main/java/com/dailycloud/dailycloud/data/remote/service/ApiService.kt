@@ -1,7 +1,6 @@
 package com.dailycloud.dailycloud.data.remote.service
 
 import com.dailycloud.dailycloud.data.local.model.Content
-import com.dailycloud.dailycloud.data.local.model.Journal
 import com.dailycloud.dailycloud.data.remote.response.AddJournalResponse
 import com.dailycloud.dailycloud.data.remote.response.AddUserResponse
 import com.dailycloud.dailycloud.data.remote.response.ArticlesResponse
@@ -12,7 +11,6 @@ import com.dailycloud.dailycloud.data.remote.response.TodayJournalResponse
 import com.dailycloud.dailycloud.data.remote.response.UpdateUserResponse
 import com.dailycloud.dailycloud.data.remote.response.UploadImageResponse
 import com.dailycloud.dailycloud.data.remote.response.UserDetailResponse
-import com.google.firebase.Timestamp
 import okhttp3.MultipartBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

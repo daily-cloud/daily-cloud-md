@@ -1,12 +1,10 @@
 package com.dailycloud.dailycloud.data.remote.service
 
 import com.dailycloud.dailycloud.ui.common.UiState
-import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GetTokenResult
 import kotlinx.coroutines.flow.Flow
 
 interface AuthService {

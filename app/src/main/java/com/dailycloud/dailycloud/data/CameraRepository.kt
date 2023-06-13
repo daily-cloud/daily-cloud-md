@@ -1,6 +1,5 @@
 package com.dailycloud.dailycloud.data
 
-import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,16 +13,10 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import com.dailycloud.dailycloud.data.remote.service.ApiService
 import com.dailycloud.dailycloud.data.remote.service.CameraService
-import com.dailycloud.dailycloud.ui.common.UiState
 import com.dailycloud.dailycloud.util.MLHelper
-import com.dailycloud.dailycloud.util.Util
 import com.dailycloud.dailycloud.util.Util.createImageFile
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import java.io.File
-import java.nio.file.Files.createFile
 import javax.inject.Inject
 
 class CameraRepository @Inject constructor(

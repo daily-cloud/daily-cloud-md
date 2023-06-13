@@ -3,11 +3,9 @@ package com.dailycloud.dailycloud.ui.screen.home
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,11 +25,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dailycloud.dailycloud.R
-import com.dailycloud.dailycloud.ui.common.Mood
 import com.dailycloud.dailycloud.ui.components.ActivitySelect
 import com.dailycloud.dailycloud.ui.components.ContentHomeItem
 import com.dailycloud.dailycloud.ui.components.JournalPreview
-import com.dailycloud.dailycloud.ui.components.MoodChoices
 
 @Composable
 fun HomeScreen(

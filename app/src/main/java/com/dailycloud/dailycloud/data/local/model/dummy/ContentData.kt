@@ -2,7 +2,6 @@ package com.dailycloud.dailycloud.data.local.model.dummy
 
 import com.dailycloud.dailycloud.data.local.model.Content
 import com.google.firebase.Timestamp
-import java.util.Date
 
 object ContentData {
     val listContent = listOf(

@@ -22,22 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.dailycloud.dailycloud.R
 import com.dailycloud.dailycloud.ui.common.UiState
 import com.dailycloud.dailycloud.ui.theme.DailyCloudTheme
-import com.dailycloud.dailycloud.ui.theme.Primary
 import com.dailycloud.dailycloud.util.Util.dateFormat
-import com.google.firebase.Timestamp
 
 @Composable
 fun ContentScreen(

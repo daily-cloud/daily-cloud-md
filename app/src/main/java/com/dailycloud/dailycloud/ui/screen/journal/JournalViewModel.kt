@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.dailycloud.dailycloud.data.DailyCloudRepository
 import com.dailycloud.dailycloud.data.local.model.Journal
 import com.dailycloud.dailycloud.data.remote.response.AddJournalResponse
-import com.dailycloud.dailycloud.data.remote.response.AddUserResponse
 import com.dailycloud.dailycloud.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first

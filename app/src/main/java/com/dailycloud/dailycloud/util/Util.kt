@@ -1,6 +1,5 @@
 package com.dailycloud.dailycloud.util
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.res.Resources

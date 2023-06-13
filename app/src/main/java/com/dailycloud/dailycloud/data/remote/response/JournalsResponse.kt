@@ -1,7 +1,6 @@
 package com.dailycloud.dailycloud.data.remote.response
 
 import com.dailycloud.dailycloud.data.local.model.Journal
-import com.google.firebase.Timestamp
 import com.google.gson.annotations.SerializedName
 
 data class JournalsResponse(

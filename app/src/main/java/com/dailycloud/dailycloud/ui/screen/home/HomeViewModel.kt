@@ -11,15 +11,9 @@ import com.dailycloud.dailycloud.data.local.model.Content
 import com.dailycloud.dailycloud.data.local.model.Journal
 import com.dailycloud.dailycloud.data.remote.response.Quote
 import com.dailycloud.dailycloud.ui.common.Activity
-import com.dailycloud.dailycloud.ui.common.Mood
 import com.dailycloud.dailycloud.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

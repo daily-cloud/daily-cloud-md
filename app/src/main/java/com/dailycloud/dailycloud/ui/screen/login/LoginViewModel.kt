@@ -1,22 +1,15 @@
 package com.dailycloud.dailycloud.ui.screen.login
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dailycloud.dailycloud.data.DailyCloudRepository
 import com.dailycloud.dailycloud.ui.common.UiState
 import com.google.android.gms.auth.api.identity.BeginSignInResult
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

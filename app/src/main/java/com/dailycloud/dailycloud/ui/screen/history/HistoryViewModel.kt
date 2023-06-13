@@ -1,6 +1,5 @@
 package com.dailycloud.dailycloud.ui.screen.history
 
-import android.util.Log
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,11 +12,9 @@ import com.dailycloud.dailycloud.data.DailyCloudRepository
 import com.dailycloud.dailycloud.data.local.model.Journal
 import com.dailycloud.dailycloud.data.remote.response.JournalsResponse
 import com.dailycloud.dailycloud.ui.common.UiState
-import com.dailycloud.dailycloud.util.Util.toDate
 import com.dailycloud.dailycloud.util.Util.toDay
 import com.dailycloud.dailycloud.util.Util.toMonth
 import com.dailycloud.dailycloud.util.Util.toYear
-import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

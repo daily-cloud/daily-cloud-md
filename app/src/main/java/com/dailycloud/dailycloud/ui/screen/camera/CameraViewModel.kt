@@ -1,16 +1,12 @@
 package com.dailycloud.dailycloud.ui.screen.camera
 
-import android.app.Application
 import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dailycloud.dailycloud.data.CameraRepository
 import com.dailycloud.dailycloud.data.DailyCloudRepository
-import com.dailycloud.dailycloud.ui.common.UiState
 import com.dailycloud.dailycloud.util.Util.reduceFileImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

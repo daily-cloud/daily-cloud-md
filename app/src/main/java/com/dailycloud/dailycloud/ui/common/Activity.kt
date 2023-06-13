@@ -1,9 +1,5 @@
 package com.dailycloud.dailycloud.ui.common
 
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import com.dailycloud.dailycloud.R
-
 sealed class Activity(
     val title: String,
 ) {
