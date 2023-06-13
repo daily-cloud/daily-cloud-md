@@ -124,18 +124,12 @@ fun NavGraph(
                     }
                 },
                 toEditProfile = {
-                    navController.navigate(Screen.EditProfile.route)
+                    navController.navigate(Screen.EditProfile.createRoute(it))
                 }
             )
         }
 
-        composable(Screen.EditProfile.route) {
-            EditProfileScreen(
-                backToProfile = {
-                    navController.navigate(Screen.Profile.route)
-                },
-            )
-        }
+
 
         composable(
             route = Screen.Journal.route,
@@ -169,6 +163,17 @@ fun NavGraph(
                 navigateBack = {
                     navController.navigateUp()
                 }
+            )
+        }
+
+        composable(
+            route = Screen.EditProfile.route) {
+            val name = it.arguments?.getString("name") ?: ""
+            EditProfileScreen(
+                backToProfile = {
+                    navController.navigate(Screen.Profile.route)
+                },
+                name = name
             )
         }
     }

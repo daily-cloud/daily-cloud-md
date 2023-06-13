@@ -53,7 +53,6 @@ class ProfileViewModel @Inject constructor(private val repository: DailyCloudRep
 
                     }
                     is UiState.Success -> {
-                        Log.d("TESS",name)
                         toProfile()
                     }
                     is UiState.Error -> {

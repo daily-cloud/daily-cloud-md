@@ -3,10 +3,8 @@ package com.dailycloud.dailycloud.ui.screen.profile
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,11 +30,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -47,10 +42,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -68,9 +61,7 @@ import coil.compose.rememberImagePainter
 import com.dailycloud.dailycloud.R
 import com.dailycloud.dailycloud.ui.components.CustomOutlinedButton
 import com.dailycloud.dailycloud.ui.theme.Primary
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
+import com.dailycloud.dailycloud.util.Util.createImageFile
 import java.util.Objects
 
 @SuppressLint("RestrictedApi")
@@ -79,9 +70,9 @@ import java.util.Objects
 fun EditProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     backToProfile: () -> Unit,
+    name: String?
 ) {
-
-    val nameEdit = remember { mutableStateOf(viewModel.name.value) }
+    val nameEdit = remember { mutableStateOf(name) }
 
     var profileImageUrl = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
     val showDialog = remember { mutableStateOf(false) }
@@ -91,19 +82,6 @@ fun EditProfileScreen(
             showDialog.value = false
         }
 
-    //==================================================================
-
-    @SuppressLint("SimpleDateFormat")
-    fun Context.createImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = "JPEG_" + timeStamp + "_"
-        val image = File.createTempFile(
-            imageFileName,
-            ".jpg",
-            externalCacheDir
-        )
-        return image
-    }
 
     val context = LocalContext.current
     val file = context.createImageFile()
@@ -130,13 +108,10 @@ fun EditProfileScreen(
         }
     }
 
-    //=======================================================
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-
     ) {
         IconButton(onClick = backToProfile) {
             Icon(
@@ -148,7 +123,7 @@ fun EditProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                ,
             verticalArrangement = Arrangement.Center
         ) {
             Card(
@@ -246,7 +221,7 @@ fun EditProfileScreen(
                             .fillMaxWidth()
                     ) {
                         OutlinedTextField(
-                            value = nameEdit.value,
+                            value = nameEdit.value!!,
                             onValueChange = { nameEdit.value = it },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -272,7 +247,7 @@ fun EditProfileScreen(
             }
             Spacer(modifier = Modifier.height(24.dp))
             CustomOutlinedButton(
-                onClick = { viewModel.updateUser(backToProfile, nameEdit.value) },
+                onClick = { viewModel.updateUser(backToProfile, nameEdit.value!!) },
                 text = stringResource(R.string.update).uppercase(),
                 modifier = Modifier.fillMaxWidth()
             )
