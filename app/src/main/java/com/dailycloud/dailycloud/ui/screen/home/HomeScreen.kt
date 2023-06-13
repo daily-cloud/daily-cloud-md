@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,7 +56,7 @@ fun HomeScreen(
     }
 
     Column(modifier = modifier) {
-        Text("Hello, Cloudie!", style = MaterialTheme.typography.displaySmall, modifier = Modifier.padding(16.dp))
+        Text(stringResource(R.string.hello_cloudie), style = MaterialTheme.typography.displaySmall, modifier = Modifier.padding(16.dp))
         ActivitySelect(
             onActivitySelected = viewModel::onActivitySelected,
             activitySelected = activitySelected,
@@ -72,7 +73,7 @@ fun HomeScreen(
                 toJournal(journal?.journalId)
             }
         }
-        Text("For You", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 16.dp))
+        Text("For You", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 16.dp))
         LazyRow(
             contentPadding = PaddingValues(16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -89,10 +90,21 @@ fun HomeScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            quote ?: stringResource(id = R.string.content_quote),
+            quote?.quote ?: stringResource(id = R.string.content_quote),
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        )
+        Text(
+            "- ${quote?.author} -" ?: "",
+            style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
         )
     }
 

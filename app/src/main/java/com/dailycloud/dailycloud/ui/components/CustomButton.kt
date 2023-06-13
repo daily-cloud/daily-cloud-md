@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -70,16 +71,15 @@ fun SocialButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String,
-    Icon: ImageVector,
+    icon: Painter,
 ) {
     OutlinedButton(
         modifier = modifier,
-        colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White, contentColor = Color.Black),
         shape = RoundedCornerShape(8.dp),
         contentPadding = PaddingValues(16.dp),
         onClick = onClick
     ) {
-        Icon(imageVector = Icons.Default.Email, contentDescription = text)
-        Text(text, textAlign = TextAlign.Center, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+        Icon(painter = icon, contentDescription = text, modifier = Modifier.size(24.dp))
+        Text(text, textAlign = TextAlign.Center, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.weight(1f))
     }
 }

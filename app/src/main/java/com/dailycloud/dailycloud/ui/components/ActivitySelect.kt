@@ -89,7 +89,7 @@ fun ActivitySelect(
                             .clickable {
                                 onActivitySelected(it)
                             }
-                            .padding(vertical = 4.dp, horizontal = 8.dp)
+                            .padding(vertical = 8.dp, horizontal = 10.dp)
                     ) {
                         Text(
                             it.title,
@@ -117,7 +117,7 @@ fun CustomActivitySelect(
         modifier = Modifier
             .padding(16.dp)
             .border(1.dp, Color.Black, RoundedCornerShape(16.dp))
-            .padding(vertical = 4.dp, horizontal = 8.dp),
+            .padding(vertical = 8.dp, horizontal = 10.dp),
         decorationBox = { innerTextField ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -137,4 +137,21 @@ fun CustomActivitySelect(
             }
         }
     )
+}
+
+@Preview
+@Composable
+fun ActivityPreview() {
+    DailyCloudTheme() {
+        Surface(modifier = Modifier.fillMaxWidth()) {
+            ActivitySelect(
+                onActivitySelected = {},
+                isCustomActivity = false,
+                isCustomActivityFinished = false,
+                customActivity = "",
+                onCustomActivityChanged = {},
+                onCustomFinished = {}
+            )
+        }
+    }
 }

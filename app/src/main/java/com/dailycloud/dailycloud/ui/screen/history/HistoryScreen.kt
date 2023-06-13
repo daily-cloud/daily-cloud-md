@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerState
@@ -66,48 +70,60 @@ fun HistoryScreen(
             stringResource(R.string.track_your_activities),
             style = MaterialTheme.typography.titleLarge
         )
-        DatePicker(
-            state = datePickerState,
-            showModeToggle = false,
-            colors = DatePickerDefaults.colors(
-                selectedDayContainerColor = Primary,
-                selectedDayContentColor = Color.White,
-                selectedYearContainerColor = Primary,
-                selectedYearContentColor = Color.White,
-                todayContentColor = Primary,
-                todayDateBorderColor = Primary,
-                currentYearContentColor = Primary,
+        Card(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(vertical = 16.dp),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 4.dp
             ),
-            title = { },
-            headline = {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    viewModel.uiState.collectAsState().value.let { state ->
-                        when (state) {
-                            is UiState.Loading -> Text("Loading")
-                            is UiState.Success -> {
-                                Text("Tanggal: ${datePickerState.selectedDateMillis?.toDate()}", style = MaterialTheme.typography.bodyLarge)
-                                if (selectedDateJournal != null) {
-                                    Text(
-                                        "Perasaan: ${selectedDateJournal!!.mood}",
-                                        style = MaterialTheme.typography.bodyLarge
-                                    )
-                                    CustomFilledButton(
-                                        onClick = { toJournal(selectedDateJournal!!.journalId) },
-                                        text = "Cek Cerita",
-                                        modifier = Modifier.align(Alignment.End)
-                                    )
+            colors = CardDefaults.cardColors(containerColor = Color.White)
+        ) {
+            DatePicker(
+                state = datePickerState,
+                showModeToggle = false,
+                colors = DatePickerDefaults.colors(
+                    selectedDayContainerColor = Primary,
+                    selectedDayContentColor = Color.White,
+                    selectedYearContainerColor = Primary,
+                    selectedYearContentColor = Color.White,
+                    todayContentColor = Primary,
+                    todayDateBorderColor = Primary,
+                    currentYearContentColor = Primary,
+                ),
+                title = { },
+                headline = {
+                    Column(
+                        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        viewModel.uiState.collectAsState().value.let { state ->
+                            when (state) {
+                                is UiState.Loading -> Text("Loading")
+                                is UiState.Success -> {
+                                    Text("Tanggal: ${datePickerState.selectedDateMillis?.toDate()}", style = MaterialTheme.typography.bodyLarge)
+                                    if (selectedDateJournal != null) {
+                                        Text(
+                                            "Perasaan: ${selectedDateJournal!!.mood}",
+                                            style = MaterialTheme.typography.bodyLarge
+                                        )
+                                        CustomFilledButton(
+                                            onClick = { toJournal(selectedDateJournal!!.journalId) },
+                                            text = "Cek Cerita",
+                                            modifier = Modifier.align(Alignment.End)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.height(16.dp))
                                 }
-                                Spacer(modifier = Modifier.height(16.dp))
+                                is UiState.Error -> Text("Error")
                             }
-                            is UiState.Error -> Text("Error")
                         }
                     }
-                }
-            },
-        )
-
+                },
+                modifier = Modifier.padding(8.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }

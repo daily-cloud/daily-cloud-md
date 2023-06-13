@@ -34,7 +34,7 @@ fun ContentHomeItem(
     image: String,
     onClick: () -> Unit
 ) {
-    Box(modifier = modifier.clip(RoundedCornerShape(16.dp)).width(156.dp).height(88.dp).clickable(onClick = onClick).background(Color.Black)) {
+    Box(modifier = modifier.clip(RoundedCornerShape(16.dp)).width(173.dp).height(105.dp).clickable(onClick = onClick).background(Color.Black)) {
         AsyncImage(model = image, contentDescription = title, contentScale = ContentScale.Crop, modifier = Modifier.alpha(0.5f))
         Text(
             title,

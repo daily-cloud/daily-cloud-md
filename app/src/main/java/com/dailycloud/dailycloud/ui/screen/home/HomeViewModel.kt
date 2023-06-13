@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.dailycloud.dailycloud.data.DailyCloudRepository
 import com.dailycloud.dailycloud.data.local.model.Content
 import com.dailycloud.dailycloud.data.local.model.Journal
+import com.dailycloud.dailycloud.data.remote.response.Quote
 import com.dailycloud.dailycloud.ui.common.Activity
 import com.dailycloud.dailycloud.ui.common.Mood
 import com.dailycloud.dailycloud.ui.common.UiState
@@ -46,8 +47,8 @@ class HomeViewModel @Inject constructor(private val repository: DailyCloudReposi
     private val _journal: MutableState<Journal?> = mutableStateOf(null)
     val journal: State<Journal?> = _journal
 
-    private val _quote: MutableState<String?> = mutableStateOf(null)
-    val quote: State<String?> = _quote
+    private val _quote: MutableState<Quote?> = mutableStateOf(null)
+    val quote: State<Quote?> = _quote
 
     init {
 //        getTodayJournal()
@@ -118,10 +119,10 @@ class HomeViewModel @Inject constructor(private val repository: DailyCloudReposi
                 .collect {
                     when (it) {
                         is UiState.Loading -> {
-                            _quote.value = "Loading..."
+                            _quote.value = null
                         }
                         is UiState.Success -> {
-                            _quote.value = it.data.quote?.quote ?: ""
+                            _quote.value = it.data.quote
                         }
                         is UiState.Error -> {
                             _quote.value = null

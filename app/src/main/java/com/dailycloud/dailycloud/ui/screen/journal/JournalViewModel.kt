@@ -45,9 +45,13 @@ class JournalViewModel @Inject constructor(private val repository: DailyCloudRep
             ).collect {
                 when (it) {
                     is UiState.Loading -> {  }
-                    is UiState.Success -> { toResult(it.data) }
+                    is UiState.Success -> {
+                        toResult(it.data)
+                        _isJournalSubmitted.value = false
+                    }
                     is UiState.Error -> {
                         Log.e("JournalViewModel", "Error: ${it.errorMessage}")
+                        _isJournalSubmitted.value = false
                     }
                 }
             }

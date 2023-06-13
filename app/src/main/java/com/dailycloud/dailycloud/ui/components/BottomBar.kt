@@ -1,5 +1,6 @@
 package com.dailycloud.dailycloud.ui.components
 
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -16,8 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -40,22 +43,22 @@ fun BottomBar(
         val navigationItems = listOf(
             NavigationItem(
                 title = stringResource(R.string.home),
-                icon = Icons.Default.Home,
+                icon = painterResource(R.drawable.home),
                 screen = Screen.Home
             ),
             NavigationItem(
                 title = stringResource(R.string.history),
-                icon = Icons.Default.CalendarToday,
+                icon = painterResource(R.drawable.calendar),
                 screen = Screen.History
             ),
             NavigationItem(
                 title = stringResource(R.string.content),
-                icon = Icons.Default.Dashboard,
+                icon = painterResource(R.drawable.content),
                 screen = Screen.Contents
             ),
             NavigationItem(
                 title = stringResource(R.string.profile),
-                icon = Icons.Default.AccountCircle,
+                icon = painterResource(R.drawable.user),
                 screen = Screen.Profile
             ),
         )
@@ -64,8 +67,9 @@ fun BottomBar(
                 NavigationBarItem(
                     icon = {
                         Icon(
-                            imageVector = item.icon,
-                            contentDescription = item.title
+                            painter = item.icon,
+                            contentDescription = item.title,
+                            modifier = Modifier.size(24.dp)
                         )
                     },
                     label = { Text(item.title) },

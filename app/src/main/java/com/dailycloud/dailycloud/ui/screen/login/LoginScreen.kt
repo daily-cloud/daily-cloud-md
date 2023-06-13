@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -96,6 +97,6 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(24.dp))
         Text("OR", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
         Spacer(modifier = Modifier.height(24.dp))
-        SocialButton(onClick = { viewModel.oneTapSignIn { launch(it) } }, text = stringResource(R.string.log_in_with_google), Icon = Icons.Default.Email)
+        SocialButton(onClick = { viewModel.oneTapSignIn { launch(it) } }, text = stringResource(R.string.log_in_with_google), icon = painterResource(R.drawable.google))
     }
 }

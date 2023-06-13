@@ -150,12 +150,12 @@ fun MultiSignUpContent(
         SocialButton(
             onClick = oneTapSignIn,
             text = stringResource(R.string.sign_up_with_google),
-            Icon = Icons.Default.AlternateEmail
+            icon = painterResource(R.drawable.google)
         )
         SocialButton(
             onClick = { toSignUpWithEmail() },
             text = stringResource(R.string.sign_up_with_email),
-            Icon = Icons.Default.Email
+            icon = painterResource(R.drawable.envelope)
         )
     }
 }

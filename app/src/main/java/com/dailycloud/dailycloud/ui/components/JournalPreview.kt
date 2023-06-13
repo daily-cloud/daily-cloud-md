@@ -53,7 +53,7 @@ fun JournalPreview(
                 tint = Color.White,
             )
             Text(stringResource(
-                R.string.daily_journal),
+                R.string.daily_story),
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge
