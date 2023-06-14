@@ -77,7 +77,12 @@ class LoginViewModel @Inject constructor(private val repository: DailyCloudRepos
 
                 }
                 is UiState.Success -> {
-                    toHome()
+                    it.data.user?.getIdToken(true)?.addOnSuccessListener { result ->
+                        viewModelScope.launch {
+                            repository.saveToken(result.token!!)
+                            toHome()
+                        }
+                    }
                 }
                 is UiState.Error -> {
 

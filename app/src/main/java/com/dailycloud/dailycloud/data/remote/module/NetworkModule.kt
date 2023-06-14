@@ -15,7 +15,7 @@ object NetworkModule {
     @Provides
     fun apiService(): ApiService {
         return Retrofit.Builder()
-            .baseUrl("https://daily-cloud-api-dev-e5zoegfyha-et.a.run.app/")
+            .baseUrl("https://daily-cloud-e5zoegfyha-et.a.run.app/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
